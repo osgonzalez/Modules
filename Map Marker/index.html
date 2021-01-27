@@ -1,0 +1,175 @@
+<!-- bootstrap and jquery (uneceseary) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- [END] bootstrap and jquery (uneceseary) -->
+
+
+
+
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-8">
+            <div class="row">
+                <p>Click on the map to place a marker</p>
+                <canvas id="Canvas" width="700" height="700"></canvas>
+            </div>
+
+
+        </div>
+
+        <div class="col-4">
+            <!-- Unecesary butons and other stuff -->
+            <br>
+            <br>
+            <br>
+            <div class="row">
+                <div class="form-group">
+                    <label for="markerText">Marker label</label>
+                    <input type="text" class="form-control" id="markerText" placeholder="Enter new marker text!">
+                </div>
+            </div>
+            <div class="row">
+                <div class="imgDiv mx-2 border border-primary rounded-circle">
+                    <img height="40" width="24" src="http://www.clker.com/cliparts/w/O/e/P/x/i/map-marker-hi.png" alt=""
+                        class="m-2">
+                </div>
+                <div class="imgDiv mx-2  border-primary rounded-circle">
+                    <img height="40" width="24" src="http://www.clker.com/cliparts/9/M/M/q/x/M/semi-blue-pin-md.png"
+                        alt="" class="m-2">
+                </div>
+                <div class="imgDiv mx-2  border-primary rounded-circle">
+                    <img height="40" width="24" src="https://image.flaticon.com/icons/svg/1137/1137128.svg"
+                        alt="" class="m-2">
+                </div>
+                <div class="imgDiv mx-2  border-primary rounded-circle">
+                    <img height="40" width="24" src="https://cdn1.iconfinder.com/data/icons/communication-social-media-set-2/512/15-512.png"
+                        alt="" class="m-2">
+                </div>
+            </div>
+            <!--  [END] Unecesary butons and other stuff -->
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+
+    var imgMarker = "http://www.clker.com/cliparts/w/O/e/P/x/i/map-marker-hi.png"
+    $(".imgDiv").click(function() {
+        //Set the image
+        $(".imgDiv").each(function () {
+            $(this).removeClass("border");
+        })
+
+        $(this).addClass("border");
+        imgMarker = $(this).children(":first").attr("src");
+    });
+
+
+
+    var canvas = document.getElementById('Canvas');
+    var context = canvas.getContext("2d");
+
+    // Map sprite
+    var mapSprite = new Image();
+    mapSprite.src = "http://www.retrogameguide.com/images/screenshots/snes-legend-of-zelda-link-to-the-past-8.jpg";
+
+    var Marker = function () {
+        this.Sprite = new Image();
+        this.Sprite.src = "http://www.clker.com/cliparts/w/O/e/P/x/i/map-marker-hi.png"
+        this.Width = 24;
+        this.Height = 40;
+        this.XPos = 0;
+        this.YPos = 0;
+        this.markerText = ""
+    }
+
+    var Markers = new Array();
+
+    var mouseClicked = function (mouse) {
+
+        //Unecesary condition
+        var markerText = "";
+        if ($("#markerText").val() == "") {
+            return;
+        } else {
+            markerText = $("#markerText").val();
+            $("#markerText").val("");
+        }
+
+        // Get corrent mouse coords
+        var rect = canvas.getBoundingClientRect();
+        var mouseXPos = (mouse.x - rect.left);
+        var mouseYPos = (mouse.y - rect.top);
+
+        console.log("Marker added");
+
+        // Move the marker when placed to a better location
+        var marker = new Marker();
+        marker.XPos = mouseXPos - (marker.Width / 2);
+        marker.YPos = mouseYPos - marker.Height;
+        marker.markerText = markerText;
+        marker.Sprite.src = imgMarker;
+
+
+
+        Markers.push(marker);
+    }
+
+    // Add mouse click event listener to canvas
+    canvas.addEventListener("mousedown", mouseClicked, false);
+
+    var firstLoad = function () {
+        context.font = "15px Georgia";
+        context.textAlign = "center";
+    }
+
+    firstLoad();
+
+    var main = function () {
+        draw();
+    };
+
+    var draw = function () {
+        // Clear Canvas
+        context.fillStyle = "#000";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw map
+        // Sprite, X location, Y location, Image width, Image height
+        // You can leave the image height and width off, if you do it will draw the image at default size
+        context.drawImage(mapSprite, 0, 0, 700, 700);
+
+        // Draw markers
+        for (var i = 0; i < Markers.length; i++) {
+            var tempMarker = Markers[i];
+            // Draw marker
+            context.drawImage(tempMarker.Sprite, tempMarker.XPos, tempMarker.YPos, tempMarker.Width, tempMarker.Height);
+
+            // Calculate postion text
+            //var markerText = "Postion (X:" + tempMarker.XPos + ", Y:" + tempMarker.YPos;
+            var markerText = tempMarker.markerText;
+
+            // Draw a simple box so you can see the position
+            var textMeasurements = context.measureText(markerText);
+            context.fillStyle = "#666";
+            context.globalAlpha = 0.7;
+            //context.fillRect(tempMarker.XPos - (textMeasurements.width / 2), tempMarker.YPos - 15, textMeasurements.width, 20);
+            context.fillRect(tempMarker.XPos - (textMeasurements.width / 2) + (tempMarker.Width / 2), tempMarker.YPos - 20, textMeasurements.width, 20);
+            context.globalAlpha = 1;
+
+            // Draw position above
+            context.fillStyle = "#000";
+            context.fillText(markerText, tempMarker.XPos + (tempMarker.Width / 2), tempMarker.YPos - 5);
+        }
+    };
+
+    setInterval(main, (1000 / 60)); // Refresh 60 times a second
+</script>
