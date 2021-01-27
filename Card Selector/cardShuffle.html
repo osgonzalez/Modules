@@ -1,0 +1,43 @@
+<html>
+
+<head>
+  <title>Vue Transitions - Shuffle a Deck of Cards</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css'>
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.6/css/all.css'>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://kit.fontawesome.com/870d695b00.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <h1 class="title">
+      Dungeon & Cthulhu - Card Shuffling
+    </h1>
+  
+    <div class="main-buttons">
+      <button v-if="isDeckShuffled" @click="displayInitialDeck" class="button is-primary is-outlined">
+        Reset <i class="fas fa-undo"></i>
+      </button>
+      <button @click="shuffleDeck" class="button is-primary">
+        Shuffle <i class="fas fa-random"></i>
+      </button>
+    </div>
+    <transition-group :name="shuffleSpeed" tag="div" class="deck">
+      <div v-for="card in cards" :key="card.id" class="card" :class="card.color"
+        @click="card.display = !card.display">
+        <span class="card__suit card__suit--top"></span>
+        <span v-if="card.display" class="card__number" :class="card.type"> </span>
+        <i v-else class="card__number fab fa-d-and-d red"></i>
+        <span v-if="card.position > 0" class="card__suit card__suit--bottom red">{{ card.position }}</span>
+      </div>
+    </transition-group>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="./main.js"></script>
+</body>
+
+</html>
