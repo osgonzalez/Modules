@@ -1,0 +1,212 @@
+{
+  "1": {
+    "Life": 40,
+    "Atack": 14,
+    "Damage": 12,
+    "TS": 12,
+    "DamageLow": 12
+  },
+  "2": {
+    "Life": 50,
+    "Atack": 22,
+    "Damage": 22,
+    "TS": 13,
+    "DamageLow": 19
+  },
+  "3": {
+    "Life": 70,
+    "Atack": 30,
+    "Damage": 34,
+    "TS": 15,
+    "DamageLow": 26
+  },
+  "4": {
+    "Life": 80,
+    "Atack": 38,
+    "Damage": 44,
+    "TS": 16,
+    "DamageLow": 33
+  },
+  "5": {
+    "Life": 100,
+    "Atack": 46,
+    "Damage": 56,
+    "TS": 18,
+    "DamageLow": 40
+  },
+  "6": {
+    "Life": 110,
+    "Atack": 54,
+    "Damage": 66,
+    "TS": 19,
+    "DamageLow": 47
+  },
+  "7": {
+    "Life": 130,
+    "Atack": 62,
+    "Damage": 78,
+    "TS": 21,
+    "DamageLow": 54
+  },
+  "8": {
+    "Life": 140,
+    "Atack": 70,
+    "Damage": 88,
+    "TS": 22,
+    "DamageLow": 61
+  },
+  "9": {
+    "Life": 160,
+    "Atack": 78,
+    "Damage": 100,
+    "TS": 24,
+    "DamageLow": 68
+  },
+  "10": {
+    "Life": 170,
+    "Atack": 86,
+    "Damage": 110,
+    "TS": 25,
+    "DamageLow": 75
+  },
+  "11": {
+    "Life": 190,
+    "Atack": 94,
+    "Damage": 122,
+    "TS": 27,
+    "DamageLow": 82
+  },
+  "12": {
+    "Life": 200,
+    "Atack": 102,
+    "Damage": 132,
+    "TS": 28,
+    "DamageLow": 89
+  },
+  "13": {
+    "Life": 220,
+    "Atack": 110,
+    "Damage": 144,
+    "TS": 30,
+    "DamageLow": 96
+  },
+  "14": {
+    "Life": 230,
+    "Atack": 118,
+    "Damage": 154,
+    "TS": 31,
+    "DamageLow": 103
+  },
+  "15": {
+    "Life": 250,
+    "Atack": 126,
+    "Damage": 166,
+    "TS": 33,
+    "DamageLow": 110
+  },
+  "16": {
+    "Life": 260,
+    "Atack": 134,
+    "Damage": 176,
+    "TS": 34,
+    "DamageLow": 117
+  },
+  "17": {
+    "Life": 280,
+    "Atack": 142,
+    "Damage": 188,
+    "TS": 36,
+    "DamageLow": 124
+  },
+  "18": {
+    "Life": 290,
+    "Atack": 150,
+    "Damage": 198,
+    "TS": 37,
+    "DamageLow": 131
+  },
+  "19": {
+    "Life": 310,
+    "Atack": 158,
+    "Damage": 210,
+    "TS": 39,
+    "DamageLow": 138
+  },
+  "20": {
+    "Life": 320,
+    "Atack": 166,
+    "Damage": 220,
+    "TS": 40,
+    "DamageLow": 145
+  },
+  "21": {
+    "Life": 340,
+    "Atack": 174,
+    "Damage": 232,
+    "TS": 42,
+    "DamageLow": 152
+  },
+  "22": {
+    "Life": 350,
+    "Atack": 182,
+    "Damage": 242,
+    "TS": 43,
+    "DamageLow": 159
+  },
+  "23": {
+    "Life": 370,
+    "Atack": 190,
+    "Damage": 254,
+    "TS": 45,
+    "DamageLow": 166
+  },
+  "24": {
+    "Life": 380,
+    "Atack": 198,
+    "Damage": 264,
+    "TS": 46,
+    "DamageLow": 173
+  },
+  "25": {
+    "Life": 400,
+    "Atack": 206,
+    "Damage": 276,
+    "TS": 48,
+    "DamageLow": 180
+  },
+  "26": {
+    "Life": 410,
+    "Atack": 214,
+    "Damage": 286,
+    "TS": 49,
+    "DamageLow": 187
+  },
+  "27": {
+    "Life": 430,
+    "Atack": 222,
+    "Damage": 298,
+    "TS": 51,
+    "DamageLow": 194
+  },
+  "28": {
+    "Life": 440,
+    "Atack": 230,
+    "Damage": 308,
+    "TS": 52,
+    "DamageLow": 201
+  },
+  "29": {
+    "Life": 460,
+    "Atack": 238,
+    "Damage": 320,
+    "TS": 54,
+    "DamageLow": 208
+  },
+  "30": {
+    "Life": 470,
+    "Atack": 246,
+    "Damage": 330,
+    "TS": 55,
+    "DamageLow": 215
+  }
+}

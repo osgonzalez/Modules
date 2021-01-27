@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <h1 class="text-center pt-3">Narrative vs Tactics System</h1>
+  <h2 class="text-center">Generator</h2>
+
+  <div class="container">
+    <div class="row">
+      <div class="col" style="width: 750px;">
+        <div id="viewer">
+          <div class="container primarycontentcontainer">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="content-text" data-bookid="dnd5e">
+                  <div id="pageAttrs" class="col-md-12 attrList">
+                    <div class="listResult booktemplate closed single">
+                      <div class="list-hide inapp-hide single-view slide-down content-toggle">
+  
+                        <div class="body">
+                          <div class="name">
+                            <a name="toc_4"></a>
+                            <h1 id="c-name">Mimic</h1>
+                          </div>
+                          <div class="subtitle" id="c-phrase"> Medium monstrosity (shapechanger), Neutral </div>
+                          <div class="taper taper-top"></div>
+                          <div class="single-list">
+                            <ul>
+                              <li><span>Armor Class </span><div class="d-inline" id="ca"></div></li>
+                              <li><span>Hit Points </span><div class="d-inline" id="hp"></div>
+                              </li>
+                              <li><span>Speed </span> <div class="d-inline" id="c-speed">15</div> ft.</li>
+                            </ul>
+                          </div>
+                          <div class="taper"></div>
+                          <div class="attributes d-flex justify-content-between">
+                            <div class="attr"><span>Fortitude</span><br>
+                              <div class="attr-num" id="c-Fortitude">17 (+3)</div>
+                            </div>
+                            <div class="attr"><span>Dexterity</span><br>
+                              <div class="attr-num" id="c-Dexterity">12 (+1)</div>
+                            </div>
+                            <div class="attr"><span>Power</span><br>
+                              <div class="attr-num" id="c-Power">15 (+2)</div>
+                            </div>
+                            <div class="attr"><span>Spirit</span><br>
+                              <div class="attr-num" id="c-Spirit">5 (-3)</div>
+                            </div>
+  
+                          </div>
+                          <div class="taper"></div>
+                          <div class="single-list">
+                            <ul>
+                              <li id="c-Immunities" style="display: none;"><span>Immunities </span><div class="d-inline" id="c-Immunities-list"></div></li>
+                              <li id="c-Resistances" style="display: none;"><span>Resistances </span><div class="d-inline" id="c-Resistances-list"></div></li>
+                              <li id="c-Vulnerabilities" style="display: none;"><span>Vulnerabilities </span><div class="d-inline" id="c-Vulnerabilities-list"></div></li>
+                              <li id="c-Senses" style="display: none;"><span>Senses </span><div class="d-inline" id="c-Senses-list"></div></li>
+                              <li id="c-Iniciative" style="display: none;"><span>Iniciative </span><div class="d-inline" id="c-Iniciative-list"></div></li>
+                              <li><span>Challenge </span> <div class="d-inline" id="c-level">2</div> <div class="d-inline" id="c-ratio"></div>  (<div class="d-inline" id="c-xp">450</div> XP)</li>
+                            </ul>
+                          </div>
+                          <div class="taper"></div>
+                          <div class="traits">
+                            <ul id="skillList">
+                            </ul>
+                          </div>
+                          <!-- <div class="actions">
+                            <a name="toc_5"></a>
+                            <h2>Actions</h2>
+                            <hr>
+                            <ul>
+                              <li><span>Pseudopod.</span> <i>Melee Weapon Attack:</i>
+                                +5 to hit, reach 5 ft., one target.
+                                <i>Hit: </i>(1d8 + 3) bludgeoning damage.
+                                If the mimic is in object form, the target is subjected to its Adhesive trait</li>
+                              <li><span>Bite.</span> <i>Melee Weapon Attack:</i>
+                                +5 to hit, reach 5 ft., one target.
+                                <i>Hit: </i>(1d8 + 3) piercing damage plus (1d8)acid damage.
+                              </li>
+                            </ul>
+                          </div> -->
+                          <div class="reactions">
+                            <ul>
+                            </ul>
+                          </div>
+                          <div class="legendary-actions">
+                            <ul>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+        <!-- <div style="width: 900px; background-color: gray;"> </div> -->
+      </div>
+
+
+      <!-- END viewer -->
+      <!-- Generator Form -->
+
+      <div class="ml-5 col">
+        <form class="center">
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Mimic">
+            </div>
+            <div class="form-group col-md-8">
+              <label for="phrase">Phrase</label>
+              <input type="text" class="form-control" id="phrase" value=" Medium monstrosity (shapechanger)">
+            </div>
+          </div>
+          <div class="form-row row">
+            <div class="form-group col-4">
+              <label for="challenge">challenge</label>
+              <input type="number" class="form-control" id="challenge" min="1" max="30" value="1">
+            </div>
+            <div class="form-group col-4">
+              <label for="level">Level</label>
+              <input type="number" class="form-control" id="level" min="1" max="120" value="4">
+            </div>
+            <div class="col-4">
+              <label for="speed-input">Speed</label>
+              <input type="text" class="form-control" style="height: 25px;width: 80px;" id="speed-input" value="15">
+            </div>
+          </div>
+
+          <!-- Life and CA / Atack -->
+          <div class="row mt-4">
+            <div class="col-6">
+              <h3 class="text-center">Life</h3>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="lifeRadio" id="lifeRadio0" value="BossHight">
+                <label class="form-check-label ml-5" for="lifeRadio0">
+                  Boss Hight (x5)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="lifeRadio" id="lifeRadio1" value="Hight">
+                <label class="form-check-label ml-5" for="lifeRadio1">
+                  Hight (x4)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="lifeRadio" id="lifeRadio2" value="Mid" checked>
+                <label class="form-check-label ml-5" for="lifeRadio2">
+                  Mid (x3)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="lifeRadio" id="lifeRadio3" value="Low">
+                <label class="form-check-label ml-5" for="lifeRadio3">
+                  Low (x2)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="lifeRadio" id="lifeRadio4" value="Extra">
+                <label class="form-check-label ml-5" for="lifeRadio4">
+                  Extra (x1)
+                </label>
+              </div>
+
+            </div>
+            <div class="col-6">
+              <h3 class="text-center">CA / Atack</h3>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="CARadio" id="CARadio0" value="BossHight">
+                <label class="form-check-label ml-5" for="CARadio0">
+                  Boss Hight (40% / 70%)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="CARadio" id="CARadio1" value="Hight">
+                <label class="form-check-label ml-5" for="CARadio1">
+                  Hight (50% / 60%)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="CARadio" id="CARadio2" value="Mid" checked>
+                <label class="form-check-label ml-5" for="CARadio2">
+                  Mid (60% / 50%)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="CARadio" id="CARadio3" value="Low">
+                <label class="form-check-label ml-5" for="CARadio3">
+                  Low (70% / 40%)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="CARadio" id="CARadio4" value="Extra">
+                <label class="form-check-label ml-5" for="CARadio4">
+                  Extra (80% / 30%)
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Damage and TS -->
+          <div class="row mt-5">
+            <div class="col-6">
+              <h3 class="text-center">Damage</h3>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="damageRadio" id="damageRadio0" value="BossHight">
+                <label class="form-check-label ml-5" for="damageRadio0">
+                  Boss Hight (x2)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="damageRadio" id="damageRadio1" value="Hight">
+                <label class="form-check-label ml-5" for="damageRadio1">
+                  Hight (x3)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="damageRadio" id="damageRadio2" value="Mid" checked>
+                <label class="form-check-label ml-5" for="damageRadio2">
+                  Mid (x4)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="damageRadio" id="damageRadio3" value="Low">
+                <label class="form-check-label ml-5" for="damageRadio3">
+                  Low (x5)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="damageRadio" id="damageRadio4" value="Extra">
+                <label class="form-check-label ml-5" for="damageRadio4">
+                  Extra (x6)
+                </label>
+              </div>
+
+            </div>
+            <div class="col-6">
+              <h3 class="text-center">TS</h3>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="TSRadio" id="TSRadio0" value="BossHight">
+                <label class="form-check-label ml-5" for="TSRadio0">
+                  Boss Hight (40%)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="TSRadio" id="TSRadio1" value="Hight">
+                <label class="form-check-label ml-5" for="TSRadio1">
+                  Hight (50%)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="TSRadio" id="TSRadio2" value="Mid" checked>
+                <label class="form-check-label ml-5" for="TSRadio2">
+                  Mid (60%)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="TSRadio" id="TSRadio3" value="Low">
+                <label class="form-check-label ml-5" for="TSRadio3">
+                  Low (70%)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="TSRadio" id="TSRadio4" value="Extra">
+                <label class="form-check-label ml-5" for="TSRadio4">
+                  Extra (80%)
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Damage and TS -->
+          <div class="row mt-5 col-12">
+            <h3 class="text-center m-auto">Special Aptitudes</h3>
+          </div>
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="aptitudeRadio" id="aptitudeRadio0" value="-3">
+                <label class="form-check-label ml-5" for="aptitudeRadio0">
+                  Hight Vul. (-3)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="aptitudeRadio" id="aptitudeRadio1" value="-2">
+                <label class="form-check-label ml-5" for="aptitudeRadio1">
+                  Vulnerability (-2)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="aptitudeRadio" id="aptitudeRadio2" value="-1" checked>
+                <label class="form-check-label ml-5" for="aptitudeRadio2">
+                  None (-1)
+                </label>
+              </div>
+
+
+            </div>
+            <div class="col-6">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="aptitudeRadio" id="aptitudeRadio3" value="0">
+                <label class="form-check-label ml-5" for="aptitudeRadio3">
+                  Simple (0)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="aptitudeRadio" id="aptitudeRadio4" value="+1">
+                <label class="form-check-label ml-5" for="aptitudeRadio4">
+                  Good (+1)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="aptitudeRadio" id="aptitudeRadio5" value="+2">
+                <label class="form-check-label ml-5" for="aptitudeRadio5">
+                  Great (+2)
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="mt-5 d-flex justify-content-center">
+            <button id="generate" type="button" class="btn btn-primary  d-center ">Generate</button>
+          </div>
+
+
+
+          <div class="form-group" id="results">
+
+          </div>
+
+          <div class="form-group" id="Skills">
+
+          </div>
+      
+          <div class="my-5 d-flex justify-content-center">
+            <button id="addSkill" type="button" class="btn btn-primary  d-center ">Add Skill</button>
+          </div>
+
+          <div class="form-row row">
+            <div class="form-group col-3">
+              <label for="Fortitude">Fortitude</label>
+              <input type="number" class="form-control" id="Fortitude" min="0"  value="10">
+            </div>
+            <div class="form-group col-3">
+              <label for="Dexterity">Dexterity</label>
+              <input type="number" class="form-control" id="Dexterity" min="0"  value="10">
+            </div>
+            <div class="form-group col-3">
+              <label for="Power">Power</label>
+              <input type="number" class="form-control" id="Power" min="0"  value="10">
+            </div>
+            <div class="form-group col-3">
+              <label for="Spirit">Spirit</label>
+              <input type="number" class="form-control" id="Spirit" min="0"  value="10">
+            </div>
+          </div>
+
+          <div class="form-check row my-1">
+            <input class="form-check-input" type="checkbox" value="" id="Immunities">
+            <label class="form-check-label col-3 ml-3" for="Immunities">
+              Immunities
+            </label>
+            <input type="text" class="form-control d-inline col-8" id="input-Immunities">
+          </div>
+          <div class="form-check row my-1">
+            <input class="form-check-input" type="checkbox"  id="Resistances">
+            <label class="form-check-label col-3 ml-3" for="Resistances">
+              Resistances
+            </label>
+            <input type="text" class="form-control d-inline col-8" id="input-Resistances" value="Amortiguation (10)">
+          </div>
+          <div class="form-check row my-1">
+            <input class="form-check-input" type="checkbox" value="" id="Vulnerabilities">
+            <label class="form-check-label col-3 ml-3" for="Vulnerabilities">
+              Vulnerabilities
+            </label>
+            <input type="text" class="form-control d-inline col-8" id="input-Vulnerabilities">
+          </div>
+          <div class="form-check row my-1">
+            <input class="form-check-input" type="checkbox" value="" id="Senses">
+            <label class="form-check-label col-3 ml-3" for="Senses">
+              Senses
+            </label>
+            <input type="text" class="form-control d-inline col-8" id="input-Senses" value="Darkvision 60 ft, Pasive Perception 10">
+          </div>
+          <div class="form-check row my-1">
+            <input class="form-check-input" type="checkbox" value="" id="Iniciative">
+            <label class="form-check-label col-3 ml-3" for="Iniciative">
+              Iniciative
+            </label>
+            <input type="text" class="form-control d-inline col-8" id="input-Iniciative" value="+6">
+          </div>
+           
+          
+        </form>
+      </div>
+
+    </div>
+
+    <div class="row mt-5"><button id="download" type="button" class="btn btn-primary  d-center">Donwload</button></div>
+    
+  </div>
+
+
+
+</body>
+<link rel="stylesheet" href="./jquery-ui-1.css" type="text/css">
+<link rel="stylesheet" href="./v2.css" type="text/css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="./compendium.css" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="./html2Canvas/html2canvas.min.js"></script>
+<script src="generator.js"></script>
+
+</html>
