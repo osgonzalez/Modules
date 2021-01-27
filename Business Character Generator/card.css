@@ -1,0 +1,31 @@
+.color-cyan{
+    color: #22b8cf;
+}
+
+.color-combat{
+    color: darkorange;
+}
+
+.color-atribute{
+    color: #989898;
+}
+
+
+/* To start need the css value --num: 1000; */
+
+@property --num {
+    syntax: '<integer>';
+    initial-value: 0;
+    inherits: false;
+  }
+  
+  .fastCounter {
+    display: inline;
+    transition: --num 1.5s;
+    counter-reset: num var(--num);
+  }
+  
+  .fastCounter::after {
+    content: counter(num);
+  }
+
