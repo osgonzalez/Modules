@@ -101,28 +101,34 @@ function generate(num){
   $("#outputTable").empty()
 
   for(line in lines){
-    var money = Math.round(5 + (Math.random()*100)%20)
-    var error =  Math.round(money / ((Math.sqrt((($("#eval").val()))))+1))
+    var dificulty = Math.round(5 + (Math.random()*100)%25)
+    var error =  Math.round(dificulty / ((Math.sqrt((($("#eval").val()))))+1))
     var reward = generateReward()
     var extraReward  =  generateExtraReward();
     var state  =  generateState();
-    var chaos = 20 + Math.round(((Math.random()*100) * parseInt(rewardProb[reward]["chaosIndex"]))/5)*5 
+    var chaosMultiplier = parseInt(rewardProb[reward]["chaosIndex"]) +  (0.05 * dificulty)  //Max 3 + 1.5
+    var chaos = 20 + Math.round(((Math.random()*80) *  chaosMultiplier)/5)*5 
     var chaosClass = chaos >= 100? "chaos-"+Math.floor(chaos/100): ""
     $("#outputTable").append('<tr>'+
       '<th scope="row">'+(line)+'</th>'+
       '<td>'+lines[line]+ '</td>'+
-      '<td>'+money+' <span class="reduccion">&#177;'+error+'</span></td>'+ 
+      '<td>'+dificulty+' <span class="reduccion">&#177;'+error+'</span></td>'+ 
       '<td>'+reward+'$</td>'+
       '<td>'+state+'</td>'+
       '<td class="'+chaosClass+'">'+chaos+'</td>'+
       '<td class="black">'+extraReward+'</td>'+
     '</tr>')
   }
+
+  //Datatables
+  $('#mainTable').DataTable({
+    paging: false,
+    searching: false,
+  });
+
 }
 
-$(function(){
-  $("#tableContainer").hide()
-})
+
 
 
 const rewardProb ={
@@ -235,6 +241,14 @@ function generateState(){
   rand = (Math.round(Math.random()*1000)%states.length)
   return states[rand]
 }
+
+
+///// Document Ready
+$(function(){
+  $("#tableContainer").hide()
+  // $('#mainTable').DataTable();
+})
+
 
 const states =  
 [
