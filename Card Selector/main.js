@@ -10,9 +10,9 @@ var app = new Vue({
       'nada': 'fas fa-yin-yang'
     },
     numbers: {
-      'death': 3,
+      'death': 3,//2
       'money': 3,
-      'comments': 1,
+      'comments': 1,//3
       'law': 2,
       'nada': 4
     },

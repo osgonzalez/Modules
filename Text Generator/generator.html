@@ -1,43 +1,89 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="">
 </head>
-  <body>
-    <div class="container">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Description</th>
-          </tr>
-        </thead>
-        <tbody id="outputTable">
-        </tbody>
-      </table>
-      <div class="d-flex m-auto">
-        <button id="generate" type="button" class="btn btn-primary btn-lg">Busar Misiones</button>
+
+<body>
+  <div id="tableContainer" class="container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col" class="text-center">#</th>
+          <th scope="col" class="text-center">Description</th>
+          <th scope="col" class="text-center">Dificuldad</th>
+          <th scope="col" class="text-center">Reward</th>
+          <th scope="col" class="text-center">Lugar</th>
+          <th scope="col" class="text-center">Caos</th>
+          <th scope="col" class="text-center">Extra</th>
+        </tr>
+      </thead>
+      <tbody id="outputTable">
+      </tbody>
+    </table>
+
+  </div>
+
+
+  <div id="imputrContainer" class="container m-5 p-5">
+    <div class="d-flex justify-content-center">
+      <div>
+        <div class="row" style="max-width: 5cm;">
+          <label for="dice">Resultado busqueda</label>
+          <input type="number" class="form-control" id="dice">
+        </div>
+        <div class="row mt-3" style="max-width: 5cm;">
+          <label for="eval">Resultado evaluacion</label>
+          <input type="number" class="form-control" value="1" id="eval">
+        </div>
+        <div class="mt-4 d-flex m-auto">
+          <button id="generate" type="button" class="btn btn-primary btn-lg center">Busar Misiones</button>
+        </div>  
       </div>
     </div>
 
-    
 
-  </body>
 
-  <script
-  src="https://code.jquery.com/jquery-3.5.1.min.js"
-  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-  crossorigin="anonymous"></script>
+  </div>
+
+
+</body>
+<style>
+  .black {
+    background-color: black !important;
+    color: black !important;
+  }
+  .reduccion {
+    font-size: .6em;
+    color: #ff4b00;
+  }
+  .chaos-1{
+    font-weight: bold;
+    color: #f4433696;
+  }
+  .chaos-2{
+    font-weight: bold;
+    color: #f44336c0;
+  }
+  .chaos-3{
+    font-weight: bold;
+    color: #f44336;
+  }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-    crossorigin="anonymous"></script>
-  <script src="./generator.js"></script>
-  <script src="./data.js"></script>
+  integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+<script src="./generator.js"></script>
+<script src="./data.js"></script>
+
 </html>

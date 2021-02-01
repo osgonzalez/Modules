@@ -6,19 +6,41 @@ gen_data['main'] = [
   ];
 
   gen_data['suceso'] = [
-    'extrañas luces',
+    '{grotescas} luces',
     'desapariciones de {victima}',
-    'extraños ruidos',
-    'ruidos grotescos',
+    'inusuales descensos de temperatura locales',
+    'ruidos {grotescos}',
     'multituz de cadaveres destrozados de {victima}',
     'un avistamiento de un posible {criatura}',
     'un ataque de un posible {criatura}',
-    'una serie de asesinatos por parte de un supuesto {criatura}',
-    'una serie de asesinatos por parte de un supuesto {criatura}',
+    'una serie de asesinatos rituales por parte de un supuesto sectario',
+    'una serie de delitos perpetrados por una secta',
+    'una serie de asesinatos en {grotescas} circustancias',
+    'un cadaver desmenbrado de forma inusual',
     'una serie de asesinatos por parte de un supuesto {criatura}',
     'una serie de asesinatos por parte de un supuesto {criatura}',
     'un cadaver de {animales} cada dia cada {evento}',
   ];
+
+  gen_data['grotescos'] = [
+    'grotescos',
+    'extraños',
+    'aterradores',
+    '{inusuales}',
+  ]
+
+  gen_data['grotescas'] = [
+    'grotescas',
+    'extrañas',
+    'aterradoras',
+    '{inusuales}'
+  ]
+
+  gen_data['inusuales'] = [
+    'inusuales',
+    'escalofriantes'
+  ]
+
   gen_data['victima'] = {
     '1-3': 'civiles mundanos',
     '4-5': 'campesinos',
