@@ -15,13 +15,13 @@
     <table id="mainTable" class="table table-striped">
       <thead>
         <tr>
-          <th scope="col" class="text-center">#</th>
-          <th scope="col" class="text-center">Description</th>
-          <th scope="col" class="text-center">Dificuldad</th>
-          <th scope="col" class="text-center">Reward</th>
-          <th scope="col" class="text-center">Lugar</th>
-          <th scope="col" class="text-center">Caos</th>
-          <th scope="col" class="text-center">Extra</th>
+          <th scope="col" class="">#</th>
+          <th scope="col" class="">Description</th>
+          <th scope="col" class="">Dificuldad</th>
+          <th scope="col" class="">Reward</th>
+          <th scope="col" class="">Lugar</th>
+          <th scope="col" class="">Caos</th>
+          <th scope="col" class="text-center"></th>
         </tr>
       </thead>
       <tbody id="outputTable">
@@ -34,15 +34,32 @@
   <div id="imputrContainer" class="container m-5 p-5">
     <div class="d-flex justify-content-center">
       <div>
-        <div class="row" style="max-width: 5cm;">
+        <div class="row" style="max-width: 6cm;">
           <label for="dice">Resultado busqueda</label>
           <input type="number" class="form-control" id="dice">
         </div>
-        <div class="row mt-3" style="max-width: 5cm;">
+        <div class="row mt-3" style="max-width: 6cm;">
           <label for="eval">Resultado evaluacion</label>
           <input type="number" class="form-control" value="1" id="eval">
         </div>
-        <div class="mt-4 d-flex m-auto">
+        <div class="row mt-3" style="max-width: 6cm;">
+          <label for="continent">Continente a inspeccionar</label>
+          <select class="form-control" id="continent">
+            <option value="NAmerica" selected="selected">Norte America</option>
+            <option value="SAmerica">Sur America</option>
+            <option value="Europe">Europa</option>
+            <option value="Asia">Asia</option>
+            <option value="Africa">Africa</option>
+            <option value="Oceania">Oceania</option>
+            <option value="NPole">Polo Norte</option>
+            <option value="SPole">Polo Sur</option>
+          </select>
+        </div>
+        <div class="row mt-3" style="max-width: 6cm;">
+          <label for="chaosInput">Indice de Caos Actual</label>
+          <input type="number" class="form-control" value="1" id="chaosInput">
+        </div>
+        <div class="mt-4 d-flex m-auto justify-content-center" >
           <button id="generate" type="button" class="btn btn-primary btn-lg center">Busar Misiones</button>
         </div>  
       </div>
@@ -51,6 +68,50 @@
 
 
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel">Codigo de mision <strong id="misionCode"></strong> </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div id="infoModalSection">
+          <div class="modal-body" id="modal-body">
+            <div>
+              <div id="description-text"></div>
+              <br>
+              <span>Los investigadores se encontraron con una dificuldad de <strong id="dificulty"></strong>.</span> 
+              <br>           
+              <span>Un alto riesgo de muerte comienza a partir de  <strong id="death"></strong>.</span>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            
+            <button type="button" class="btn btn-success modal-butom"  id="sucessButon">Exito!</button>
+            <span id="localization"></span>
+            <button type="button" class="btn btn-danger modal-butom" data-bs-dismiss="modal">Fracaso</button>
+          </div>
+        </div>
+        <div id="extraModalSection">
+          <div class="modal-body" id="modal-body">
+            <div>
+              Los investigadores han completado con <strong class="text-success">exito</strong> la mision, por
+              lo que han reducido el indice de caos general de <span id="mesageState"></span> en 
+              <strong class="text-warning" id="chaosReduction"></strong> 
+              puntos. <span id="extraRewardMesage">Ademas gracias a sus investigaciones, han encontrado:</span>
+            </div>
+            <div class="text-center mt-3" id="extraReward"></div>
+          </div>
+          <div class="pb-3 pt-1 d-flex justify-content-center">
+            <button type="button" class="btn btn-info btn-lg" data-bs-dismiss="modal">Finalizar Mision</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal -->
 
 
 </body>
@@ -78,6 +139,26 @@
   .chaos-4, .chaos-5, .chaos-6{
     font-weight: bold;
     color: #ff0000;
+  }
+  #extraReward{
+    color: #f44336;
+  }
+  .modal-butom{
+    font-weight: bold!important;
+    width: 100px;
+  }
+  #extraReward{
+    font-weight: bold;
+    color: #0077ff;
+  }
+  #death{
+    color: #f44336;
+  }
+  #dificulty{
+    color: #004aff;
+  }
+  .strong-bold{
+    font-weight: bold!important;
   }
 </style>
 

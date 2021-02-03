@@ -1,7 +1,7 @@
 let gen_data = {};
-const chaosTotalIncrement = 2000; //100 per mision
+const chaosTotalIncrement = 2000; //average of 100 per mision
 const chaosPercentIncrement = 0.05;
-
+var finalChaos = 0;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // generator function
 
@@ -90,7 +90,11 @@ const chaosPercentIncrement = 0.05;
 // - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 $("#generate").on("click", function(){
-  generate(Math.sqrt((($("#dice").val())))-1)
+  var chaosIncrement = Math.round($("#chaosInput").val()/2000)
+  var genRate = Math.sqrt(parseInt($("#dice").val())+ parseInt(chaosIncrement))
+  generate(Math.round(genRate))
+  var initalChaos = parseInt($("#chaosInput").val()) 
+  finalChaos = Math.round(chaosTotalIncrement + initalChaos + initalChaos * chaosPercentIncrement)
 })
 
 
@@ -102,22 +106,72 @@ function generate(num){
 
   for(line in lines){
     var dificulty = Math.round(5 + (Math.random()*100)%25)
-    var error =  Math.round(dificulty / ((Math.sqrt((($("#eval").val()))))+1))
+    var evaluation = Math.sqrt((($("#eval").val())/2))+1
+    var error =  Math.round(dificulty / evaluation)
+    var realDificulty = error==0? dificulty: Math.round(dificulty - error + (Math.random()*100)%(error*2))
     var reward = generateReward()
     var extraReward  =  generateExtraReward();
     var state  =  generateState();
-    var chaosMultiplier = parseInt(rewardProb[reward]["chaosIndex"]) +  (0.05 * dificulty)  //Max 3 + 1.5
+    var chaosMultiplier = parseInt(rewardProb[reward]["chaosIndex"]) +  (0.05 * realDificulty)  //Max 3 + 1.5
     var chaos = 20 + Math.round(((Math.random()*80) *  chaosMultiplier)/5)*5 
     var chaosClass = chaos >= 100? "chaos-"+Math.floor(chaos/100): ""
     $("#outputTable").append('<tr>'+
-      '<th scope="row">'+(line)+'</th>'+
-      '<td>'+lines[line]+ '</td>'+
-      '<td>'+dificulty+' <span class="reduccion">&#177;'+error+'</span></td>'+ 
-      '<td>'+reward+'$</td>'+
-      '<td>'+state+'</td>'+
-      '<td class="'+chaosClass+'">'+chaos+'</td>'+
-      '<td class="black">'+extraReward+'</td>'+
+      '<th class="align-middle" scope="row">'+(line)+'</th>'+
+      '<td class="align-middle">'+lines[line]+ '</td>'+
+      '<td class="align-middle">'+dificulty+' <span class="reduccion">&#177;'+error+'</span></td>'+ 
+      '<td class="align-middle">'+reward+'$</td>'+
+      '<td class="align-middle">'+state+'</td>'+
+      '<td class="align-middle text-center chaos '+chaosClass+'">'+chaos+'</td>'+
+      '<td class="align-middle text-center"><button id="butom-'+line+'" data-bs-toggle="modal" data-bs-target="#modal" type="button" class="btn btn-primary btn-sm">Reclamar</button></td>'+
     '</tr>')
+
+    $("#butom-"+line).data("realDificulty",realDificulty)
+    $("#butom-"+line).data("extraReward",extraReward)
+    $("#butom-"+line).data("chaos",chaos)
+    $("#butom-"+line).data("text",lines[line])
+    $("#butom-"+line).data("number",line)
+    $("#butom-"+line).data("state",state)
+
+    
+    $("#butom-"+line).on("click",function(){
+      var realDificulty = $(this).data("realDificulty")
+      var extraReward= $(this).data("extraReward")
+      var chaos = $(this).data("chaos")
+      var text = $(this).data("text")
+      var number = $(this).data("number")
+      var state = $(this).data("state")
+
+
+      $(this).removeClass("btn-primary")
+      $(this).addClass("btn-dark")
+      
+      
+      $("#infoModalSection").show()
+      $("#extraModalSection").hide()
+
+      $("#misionCode").text("#" +number)
+      $("#description-text").text(text)
+      $("#localization").text(state)
+      $("#dificulty").text(realDificulty)
+      $("#death").text(Math.ceil(realDificulty/2))
+      $("#extraReward").text(extraReward)
+      $("#chaosReduction").text(chaos)
+      $("#mesageState").text($( "#continent option:selected" ).text())
+
+      if(extraReward == "Nada"){
+        $("#extraRewardMesage").hide()
+        $("#extraReward").hide()
+      }else{
+        $("#extraRewardMesage").show()
+        $("#extraReward").show()
+      }
+
+
+      //$("#sucessButon").text(realDificulty)
+
+      
+    })
+
   }
 
   //Datatables
@@ -125,6 +179,11 @@ function generate(num){
     paging: false,
     searching: false,
   });
+
+  $("#sucessButon").on("click",function(){
+    $("#infoModalSection").hide()
+    $("#extraModalSection").show()
+  })
 
 }
 
@@ -238,8 +297,9 @@ function generateExtraReward(){
 
 
 function generateState(){
-  rand = (Math.round(Math.random()*1000)%states.length)
-  return states[rand]
+  var continent = $("#continent").val()
+  rand = (Math.round(Math.random()*1000)%states[continent].length)
+  return states[continent][rand]
 }
 
 
@@ -249,8 +309,8 @@ $(function(){
   // $('#mainTable').DataTable();
 })
 
-
-const states =  
+let states = [];
+states["NAmerica"] =  
 [
   "Alabama (USA)",
   "Alaska (USA)",
@@ -315,4 +375,347 @@ const states =
   "Territorios del Noroeste (Canada)",
   "Nunavut (Canada)",
   "Yukón (Canada)"
+]
+
+states["Europe"]=
+[
+  "Norte de Albania",
+  "Sur de Albania",
+  "Este de Albania",
+  "Oeste de Albania",
+  "Tirana (Albania)",
+  "Norte de Alemania",
+  "Sur de Alemania",
+  "Este de Alemania",
+  "Oeste de Alemania",
+  "Berlín (Alemania)",
+  "Norte de Andorra",
+  "Sur de Andorra",
+  "Este de Andorra",
+  "Oeste de Andorra",
+  "Andorra La Vieja (Andorra)",
+  "Norte de Armenia ",
+  "Sur de Armenia ",
+  "Este de Armenia ",
+  "Oeste de Armenia ",
+  "Ereván (Armenia)",
+  "Norte de Austria",
+  "Sur de Austria",
+  "Este de Austria",
+  "Oeste de Austria",
+  "Viena (Austria)",
+  "Norte de Azerbaiyán ",
+  "Sur de Azerbaiyán ",
+  "Este de Azerbaiyán ",
+  "Oeste de Azerbaiyán ",
+  "Bakú (Azerbaiyán)",
+  "Norte de Bélgica",
+  "Sur de Bélgica",
+  "Este de Bélgica",
+  "Oeste de Bélgica",
+  "Bruselas (Bélgica)",
+  "Norte de Bielorrusia",
+  "Sur de Bielorrusia",
+  "Este de Bielorrusia",
+  "Oeste de Bielorrusia",
+  "Minsk (Bielorrusia)",
+  "Norte de Bosnia y Herzegovina",
+  "Sur de Bosnia y Herzegovina",
+  "Este de Bosnia y Herzegovina",
+  "Oeste de Bosnia y Herzegovina",
+  "Sarajevo (Bosnia y Herzegovina)",
+  "Norte de Bulgaria",
+  "Sur de Bulgaria",
+  "Este de Bulgaria",
+  "Oeste de Bulgaria",
+  "Sofía (Bulgaria)",
+  "Norte de Chipre ",
+  "Sur de Chipre ",
+  "Este de Chipre ",
+  "Oeste de Chipre ",
+  "Nicosia (Chipre)",
+  "Norte de Ciudad del Vaticano",
+  "Sur de Ciudad del Vaticano",
+  "Este de Ciudad del Vaticano",
+  "Oeste de Ciudad del Vaticano",
+  "Ciudad del Vaticano (Ciudad del Vaticano)",
+  "Norte de Croacia",
+  "Sur de Croacia",
+  "Este de Croacia",
+  "Oeste de Croacia",
+  "Zagreb (Croacia)",
+  "Norte de Dinamarca",
+  "Sur de Dinamarca",
+  "Este de Dinamarca",
+  "Oeste de Dinamarca",
+  "Copenhague (Dinamarca)",
+  "Norte de Eslovaquia",
+  "Sur de Eslovaquia",
+  "Este de Eslovaquia",
+  "Oeste de Eslovaquia",
+  "Bratislava (Eslovaquia)",
+  "Norte de Eslovenia",
+  "Sur de Eslovenia",
+  "Este de Eslovenia",
+  "Oeste de Eslovenia",
+  "Liubliana (Eslovenia)",
+  "Norte de España",
+  "Sur de España",
+  "Este de España",
+  "Oeste de España",
+  "Madrid (España)",
+  "Norte de Estonia",
+  "Sur de Estonia",
+  "Este de Estonia",
+  "Oeste de Estonia",
+  "Tallín (Estonia)",
+  "Norte de Finlandia",
+  "Sur de Finlandia",
+  "Este de Finlandia",
+  "Oeste de Finlandia",
+  "Helsinki (Finlandia)",
+  "Norte de Francia",
+  "Sur de Francia",
+  "Este de Francia",
+  "Oeste de Francia",
+  "París (Francia)",
+  "Norte de Georgia ",
+  "Sur de Georgia ",
+  "Este de Georgia ",
+  "Oeste de Georgia ",
+  "Tiflis (Georgia)",
+  "Norte de Grecia",
+  "Sur de Grecia",
+  "Este de Grecia",
+  "Oeste de Grecia",
+  "Atenas (Grecia)",
+  "Norte de Hungría",
+  "Sur de Hungría",
+  "Este de Hungría",
+  "Oeste de Hungría",
+  "Budapest (Hungría)",
+  "Norte de Irlanda",
+  "Sur de Irlanda",
+  "Este de Irlanda",
+  "Oeste de Irlanda",
+  "Dublín (Irlanda)",
+  "Norte de Islandia",
+  "Sur de Islandia",
+  "Este de Islandia",
+  "Oeste de Islandia",
+  "Reikiavik (Islandia)",
+  "Norte de Italia",
+  "Sur de Italia",
+  "Este de Italia",
+  "Oeste de Italia",
+  "Roma (Italia)",
+  "Norte de Kazajistán ",
+  "Sur de Kazajistán ",
+  "Este de Kazajistán ",
+  "Oeste de Kazajistán ",
+  "Nursultán (Kazajistán)",
+  "Norte de Letonia",
+  "Sur de Letonia",
+  "Este de Letonia",
+  "Oeste de Letonia",
+  "Riga (Letonia)",
+  "Norte de Liechtenstein",
+  "Sur de Liechtenstein",
+  "Este de Liechtenstein",
+  "Oeste de Liechtenstein",
+  "Vaduz (Liechtenstein)",
+  "Norte de Lituania",
+  "Sur de Lituania",
+  "Este de Lituania",
+  "Oeste de Lituania",
+  "Vilna (Lituania)",
+  "Norte de Luxemburgo",
+  "Sur de Luxemburgo",
+  "Este de Luxemburgo",
+  "Oeste de Luxemburgo",
+  "Luxemburgo (Luxemburgo)",
+  "Norte de Macedonia del Norte",
+  "Sur de Macedonia del Norte",
+  "Este de Macedonia del Norte",
+  "Oeste de Macedonia del Norte",
+  "Skopie (Macedonia del Norte)",
+  "Norte de Malta",
+  "Sur de Malta",
+  "Este de Malta",
+  "Oeste de Malta",
+  "La Valeta (Malta)",
+  "Norte de Moldavia",
+  "Sur de Moldavia",
+  "Este de Moldavia",
+  "Oeste de Moldavia",
+  "Chisinau (Moldavia)",
+  "Norte de Mónaco",
+  "Sur de Mónaco",
+  "Este de Mónaco",
+  "Oeste de Mónaco",
+  "Mónaco (Mónaco)",
+  "Norte de Montenegro",
+  "Sur de Montenegro",
+  "Este de Montenegro",
+  "Oeste de Montenegro",
+  "Podgorica (Montenegro)",
+  "Norte de Noruega",
+  "Sur de Noruega",
+  "Este de Noruega",
+  "Oeste de Noruega",
+  "Oslo (Noruega)",
+  "Norte de Países Bajos",
+  "Sur de Países Bajos",
+  "Este de Países Bajos",
+  "Oeste de Países Bajos",
+  "Ámsterdam (Países Bajos)",
+  "Norte de Polonia",
+  "Sur de Polonia",
+  "Este de Polonia",
+  "Oeste de Polonia",
+  "Varsovia (Polonia)",
+  "Norte de Portugal",
+  "Sur de Portugal",
+  "Este de Portugal",
+  "Oeste de Portugal",
+  "Lisboa (Portugal)",
+  "Norte de Reino Unido",
+  "Sur de Reino Unido",
+  "Este de Reino Unido",
+  "Oeste de Reino Unido",
+  "Londres (Reino Unido)",
+  "Norte de República Checa",
+  "Sur de República Checa",
+  "Este de República Checa",
+  "Oeste de República Checa",
+  "Praga (República Checa)",
+  "Norte de Rumanía",
+  "Sur de Rumanía",
+  "Este de Rumanía",
+  "Oeste de Rumanía",
+  "Bucarest (Rumanía)",
+  "Norte de Rusia ",
+  "Sur de Rusia ",
+  "Este de Rusia ",
+  "Oeste de Rusia ",
+  "Moscú (Rusia)",
+  "Norte de San Marino",
+  "Sur de San Marino",
+  "Este de San Marino",
+  "Oeste de San Marino",
+  "San Marino (San Marino)",
+  "Norte de Serbia",
+  "Sur de Serbia",
+  "Este de Serbia",
+  "Oeste de Serbia",
+  "Belgrado (Serbia)",
+  "Norte de Suecia",
+  "Sur de Suecia",
+  "Este de Suecia",
+  "Oeste de Suecia",
+  "Estocolmo (Suecia)",
+  "Norte de Suiza",
+  "Sur de Suiza",
+  "Este de Suiza",
+  "Oeste de Suiza",
+  "Berna (Suiza)",
+  "Norte de Turquía ",
+  "Sur de Turquía ",
+  "Este de Turquía ",
+  "Oeste de Turquía ",
+  "Ankara (Turquía)",
+  "Norte de Ucrania",
+  "Sur de Ucrania",
+  "Este de Ucrania",
+  "Oeste de Ucrania",
+  "Kiev (Ucrania)"
+]
+
+states["SAmerica"]=
+[
+"Norte de Argentina",
+"Sur de Argentina",
+"Este de Argentina",
+"Oeste de Argentina",
+"Buenos Aires (Argentina)",
+"Norte de Bolivia",
+"Sur de Bolivia",
+"Este de Bolivia",
+"Oeste de Bolivia",
+"Sucre (Bolivia)",
+"Norte de Brasil",
+"Sur de Brasil",
+"Este de Brasil",
+"Oeste de Brasil",
+"Brasilia (Brasil)",
+"Norte de Chile",
+"Sur de Chile",
+"Este de Chile",
+"Oeste de Chile",
+"Santiago de Chile (Chile)",
+"Norte de Colombia",
+"Sur de Colombia",
+"Este de Colombia",
+"Oeste de Colombia",
+"Bogotá (Colombia)",
+"Norte de Ecuador",
+"Sur de Ecuador",
+"Este de Ecuador",
+"Oeste de Ecuador",
+"Quito (Ecuador)",
+"Norte de Guyana",
+"Sur de Guyana",
+"Este de Guyana",
+"Oeste de Guyana",
+"Georgetown (Guyana)",
+"Norte de Paraguay",
+"Sur de Paraguay",
+"Este de Paraguay",
+"Oeste de Paraguay",
+"Asunción (Paraguay)",
+"Norte de Perú",
+"Sur de Perú",
+"Este de Perú",
+"Oeste de Perú",
+"Lima (Perú)",
+"Norte de Surinam",
+"Sur de Surinam",
+"Este de Surinam",
+"Oeste de Surinam",
+"Paramaribo (Surinam)",
+"Norte de Uruguay",
+"Sur de Uruguay",
+"Este de Uruguay",
+"Oeste de Uruguay",
+"Montevideo (Uruguay)",
+"Norte de Venezuela",
+"Sur de Venezuela",
+"Este de Venezuela",
+"Oeste de Venezuela",
+"Caracas (Venezuela)"
+]
+
+states["Asia"]=
+[
+  "Localizacion Desconocida"
+]
+
+states["Africa"]=
+[
+  "Localizacion Desconocida"
+]
+
+states["Oceania"]=
+[
+  "Localizacion Desconocida"
+]
+
+states["NPole"]=
+[
+  "Localizacion Desconocida"
+]
+
+states["SPole"]=
+[
+  "Localizacion Desconocida"
 ]
