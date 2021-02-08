@@ -97,6 +97,17 @@ $("#generate").on("click", function(){
   finalChaos = Math.round(chaosTotalIncrement + initalChaos + initalChaos * chaosPercentIncrement)
 })
 
+const generatePob =
+{
+  "Standard": 90,
+  "Advanced": 8,
+  "Special": 2
+}
+
+const specialText=
+{
+  "1": {"prob": 10, "text": "" }
+}
 
 function generate(num){
   $("#imputrContainer").hide()
@@ -105,6 +116,70 @@ function generate(num){
   $("#outputTable").empty()
 
   for(line in lines){
+    //generateStandarRow(lines,line)
+    generateAvancedRow(lines,line)
+  }
+
+  //Datatables
+  $('#mainTable').DataTable({
+    paging: false,
+    searching: false,
+  });
+
+  $("#sucessButon").on("click",function(){
+    $("#infoModalSection").hide()
+    $("#extraModalSection").show()
+  })
+
+}
+
+function generateAvancedRow(lines,line){
+  var dificulty = Math.round(30 + (Math.random()*100)%25)
+  var evaluation = Math.sqrt((($("#eval").val())/3))+1
+  var error =  Math.round(dificulty / evaluation)
+  var realDificulty = error==0? dificulty: Math.round(dificulty - error + (Math.random()*100)%(error*2))
+  var reward = generateReward()   
+  var state  =  generateState();
+  var chaosMultiplier = parseInt(rewardProb[reward]["chaosIndex"]) +  (0.1 * realDificulty)  //Max 3 + 1.5
+  var chaos = 20 + Math.round(((Math.random()*80) *  chaosMultiplier)/5)*5 
+  var chaosClass = chaos >= 100? "chaos-"+Math.floor(chaos/100): ""
+  var extraReward  =  generateExtraReward();
+
+  reward =  Math.round((parseInt(reward)*0.14)*10) + Math.round(Math.random()*20)*100 
+
+  if(extraReward == "Nada"){
+    extraReward  =  generateExtraReward();
+  }else{
+    var temp  =  generateExtraReward();
+    if(temp != "Nada"){
+      extraReward += "<br>"+ temp
+    }
+  }
+
+  $("#outputTable").append('<tr>'+
+    '<th class="align-middle" scope="row">'+(line)+'</th>'+
+    '<td class="align-middle">'+lines[line]+ '</td>'+
+    '<td class="align-middle">'+dificulty+' <span class="reduccion">&#177;'+error+'</span></td>'+ 
+    '<td class="align-middle">'+reward+'$</td>'+
+    '<td class="align-middle">'+state+'</td>'+
+    '<td class="align-middle text-center chaos '+chaosClass+'">'+chaos+'</td>'+
+    '<td class="align-middle text-center"><button id="butom-'+line+'" data-bs-toggle="modal" data-bs-target="#modal" type="button" class="btn btn-primary btn-sm">Reclamar</button></td>'+
+  '</tr>')
+
+  $("#butom-"+line).data("realDificulty",realDificulty)
+  $("#butom-"+line).data("extraReward",extraReward)
+  $("#butom-"+line).data("chaos",chaos)
+  $("#butom-"+line).data("text",lines[line])
+  $("#butom-"+line).data("number",line)
+  $("#butom-"+line).data("state",state)
+
+  addModal("#butom-"+line)
+
+
+}
+
+
+function generateStandarRow(lines,line){
     var dificulty = Math.round(5 + (Math.random()*100)%25)
     var evaluation = Math.sqrt((($("#eval").val())/2))+1
     var error =  Math.round(dificulty / evaluation)
@@ -133,60 +208,51 @@ function generate(num){
     $("#butom-"+line).data("state",state)
 
     
-    $("#butom-"+line).on("click",function(){
-      var realDificulty = $(this).data("realDificulty")
-      var extraReward= $(this).data("extraReward")
-      var chaos = $(this).data("chaos")
-      var text = $(this).data("text")
-      var number = $(this).data("number")
-      var state = $(this).data("state")
+    addModal("#butom-"+line)
 
-
-      $(this).removeClass("btn-primary")
-      $(this).addClass("btn-dark")
-      
-      
-      $("#infoModalSection").show()
-      $("#extraModalSection").hide()
-
-      $("#misionCode").text("#" +number)
-      $("#description-text").text(text)
-      $("#localization").text(state)
-      $("#dificulty").text(realDificulty)
-      $("#death").text(Math.ceil(realDificulty/2))
-      $("#extraReward").text(extraReward)
-      $("#chaosReduction").text(chaos)
-      $("#mesageState").text($( "#continent option:selected" ).text())
-
-      if(extraReward == "Nada"){
-        $("#extraRewardMesage").hide()
-        $("#extraReward").hide()
-      }else{
-        $("#extraRewardMesage").show()
-        $("#extraReward").show()
-      }
-
-
-      //$("#sucessButon").text(realDificulty)
-
-      
-    })
-
-  }
-
-  //Datatables
-  $('#mainTable').DataTable({
-    paging: false,
-    searching: false,
-  });
-
-  $("#sucessButon").on("click",function(){
-    $("#infoModalSection").hide()
-    $("#extraModalSection").show()
-  })
 
 }
 
+
+function addModal(butomId){
+  
+  $(butomId).on("click",function(){
+    var realDificulty = $(this).data("realDificulty")
+    var extraReward= $(this).data("extraReward")
+    var chaos = $(this).data("chaos")
+    var text = $(this).data("text")
+    var number = $(this).data("number")
+    var state = $(this).data("state")
+
+
+    $(this).removeClass("btn-primary")
+    $(this).addClass("btn-dark")
+    
+    
+    $("#infoModalSection").show()
+    $("#extraModalSection").hide()
+
+    $("#misionCode").text("#" +number)
+    $("#description-text").text(text)
+    $("#localization").text(state)
+    $("#dificulty").text(realDificulty)
+    $("#death").text(Math.ceil(realDificulty/2))
+    $("#extraReward").empty()
+    $("#extraReward").append(extraReward)
+    $("#chaosReduction").text(chaos)
+    $("#mesageState").text($( "#continent option:selected" ).text())
+
+    if(extraReward == "Nada"){
+      $("#extraRewardMesage").hide()
+      $("#extraReward").hide()
+    }else{
+      $("#extraRewardMesage").show()
+      $("#extraReward").show()
+    }
+
+
+  })
+}
 
 
 
@@ -225,20 +291,20 @@ function generateReward(){
 
 
 const extraRewardProb ={
-  "0": {"text": "Nada", "prob": 177},
+  "0": {"text": "Nada", "prob": 80},
   "1": {"text": "250$", "prob": 20},
   "2": {"text": "500$", "prob": 20},
   "3": {"text": "750$", "prob": 20},
-  "4": {"text": "1000$", "prob": 20},
-  "5": {"text": "1500$", "prob": 20},
-  "6": {"text": "2000$", "prob": 20},
-  "7": {"text": "2500$", "prob": 20},
-  "8": {"text": "3000$", "prob": 20},
-  "9": {"text": "5000$", "prob": 5},
+  "4": {"text": "1000$", "prob": 40},
+  "5": {"text": "1500$", "prob": 40},
+  "6": {"text": "2000$", "prob": 40},
+  "7": {"text": "2500$", "prob": 40},
+  "8": {"text": "3000$", "prob": 30},
+  "9": {"text": "5000$", "prob": 15},
   "10": {"text": "8000$", "prob": 5},
-  "11": {"text": "+1x Extra reducion del indice de caos", "prob": 10},
-  "12": {"text": "+1.5x Extra reducion del indice de caos", "prob": 10},
-  "13": {"text": "+2x Extra reducion del indice de caos", "prob": 10},
+  "11": {"text": "2x Extra reducion del indice de caos", "prob": 20},
+  "12": {"text": "2.5x Extra reducion del indice de caos", "prob": 10},
+  "13": {"text": "3x Extra reducion del indice de caos", "prob": 10},
   "14": {"text": "200$ y +100 Extra reducion del indice de caos", "prob": 10},
   "15": {"text": "500$ y +100 Extra reducion del indice de caos", "prob": 10},
   "16": {"text": "1000$ y +300 Extra reducion del indice de caos", "prob": 10},
@@ -276,10 +342,38 @@ const extraRewardProb ={
   "48": {"text": "3 Azules", "prob": 7},
   "49": {"text": "2 Azules", "prob": 8},
   "50": {"text": "1 Azul", "prob": 10},
-
+  "51": {"text": "+200 Extra reducion del indice de caos", "prob": 5},
+  "52": {"text": "+150 Extra reducion del indice de caos", "prob": 10},
+  "53": {"text": "1.5x Extra reducion del indice de caos", "prob": 20},
+  "54": {"text": "1000$ y +150 Extra reducion del indice de caos", "prob": 10},
+  "55": {"text": "2000$ y +100 Extra reducion del indice de caos", "prob": 10},
+  "56": {"text": "3000$ y +100 Extra reducion del indice de caos", "prob": 5},
+  "57": {"text": "5000$ y +250 Extra reducion del indice de caos", "prob": 2},
+  "58": {"text": "3.5x Extra reducion del indice de caos", "prob": 5},
+  "59": {"text": "4x Extra reducion del indice de caos", "prob": 5},
+  "60": {"text": "Armadura Arcana +1", "prob": 2},
+  "61": {"text": "Artefacto Primigenio +2", "prob": 2},
+  "62": {"text": "Artefacto Primigenio +3", "prob": 2},
+  "63": {"text": "6 Azules", "prob": 2},
+  "64": {"text": "8 Azules", "prob": 2},
+  "65": {"text": "12 Azules", "prob": 1},
+  "66": {"text": "14 Azules", "prob": 1},
+  "67": {"text": "-1 Azules", "prob": 1},
+  "68": {"text": "-2 Azules", "prob": 1},
+  "69": {"text": "-4 Azules", "prob": 1},
 }
 
-const extraRewardProbMax = 600
+const extraRewardProbMax = 700
+
+function countExtraRewardProbMax(){
+  var toRet=0;
+
+  for(reward in extraRewardProb){
+    toRet+= parseInt(extraRewardProb[reward]["prob"])
+  }
+  
+  return toRet;
+}
 
 function generateExtraReward(){
   rand = (Math.round(Math.random()*1000)%extraRewardProbMax)
