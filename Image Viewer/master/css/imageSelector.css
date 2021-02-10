@@ -1,0 +1,183 @@
+#imageDrop{
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    /* height: 400px; */
+    width: 80%;
+    /* max-height: 30%; */
+    min-height: 200px;
+    padding: 1cm;
+    border: 2px dashed #0087F7;
+    border-radius: 10px;
+    background: white;
+}
+
+#imageDrop h1{
+  color: #0087F7;
+  font-size: 40px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.dz-error-mark,
+.dz-success-mark,
+.dz-error-message{
+    display: none;;
+}
+
+.dz-success{
+    border-radius: 10px;
+    background: rgba(149, 255, 149, 0.589);
+}
+
+.dz-error {
+    border-radius: 10px;
+    background: rgba(255, 55, 55, 0.589);
+}
+
+div .dz-preview{
+    width: 140px;
+    padding: 10px;
+    margin: 5px;
+
+}
+
+#dropError{
+  display: none;
+  color: red; 
+  margin-top: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#gallery { 
+    width: 100%;
+    min-height: 20px;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px 0 0 0;
+    float: left;
+    margin-right: 10px;
+  }
+
+ 
+
+
+  #dirs{
+    margin-top: 20px;
+    border-radius: 10px;
+    background-color: rgb(27, 21, 68);
+  }
+
+  .dir{
+    color: white;
+    background-color: rgb(13, 146, 255);
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    width: 140px;
+    height: 35px;
+    font-size: 1.1em;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  
+  .dir .dirnumber{
+    background-color: rgba(255, 0, 0, 0.658);
+    border-radius: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 3px!important;
+  }
+
+  #backDir{
+    color: white;
+    background-color: rgba(255, 0, 0, 0.658);
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    width: 140px;
+    height: 35px;
+    font-size: 1.1em;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+    
+  #gallery li {
+    margin: 25px 5px;
+    /* overflow:auto;  */
+
+  }
+
+  .image-dropable{
+    max-width: 120px;
+    max-height: 120px;
+    margin: 10px;
+  }
+
+  #viewerDrop li img{
+    width: 120px;
+    height: 120px;
+    margin: 10px;
+  }
+
+  #viewerDrop{
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    /* height: 400px; */
+    width: 80%;
+    /* max-height: 30%; */
+    min-height: 200px;
+    padding: 1cm;
+    border: 2px dashed #0087F7;
+    border-radius: 10px;
+    background: white;
+}
+
+#showButtomDiv{
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  width: 80%;
+}
+
+
+#loadButomDiv{
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  /* height: 400px; */
+  width: 40%;
+}
+
+
+
+.imageCamvas{
+  position: relative;
+  max-width: 100px;
+  max-height: 50px;
+}
+
+.brightness {
+  box-shadow: 1px 0px 13px 8px rgb(204, 202, 239), 0 6px 20px 0 rgba(10, 51, 145, 0.46);
+
+}
+ 
+
+.imgMovile{ 
+  max-width: 120px;
+  max-height: 120px;
+  margin: 10px;
+}
+
+.btnAction{
+ position: relative;
+ width: 49%;
+ margin-left: auto;
+ margin-right: auto; 
+}

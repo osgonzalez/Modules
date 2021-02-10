@@ -1,1 +1,3 @@
-.vscode
+.vscode/*
+Image Viewer/images/*.png
+Image Viewer/images/*.jpg
