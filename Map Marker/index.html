@@ -30,6 +30,9 @@
                 <div class="form-group">
                     <label for="markerText">Marker label</label>
                     <input type="text" class="form-control" id="markerText" placeholder="Enter new marker text!">
+                    <div class="invalid-feedback">
+                        Introduce un nombre para el marcador
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -60,6 +63,21 @@
 
 
 <script type="text/javascript">
+
+    function selectMarkerText(){
+        setTimeout(function() {
+                $("#markerText").focus();
+                $("#markerText").select();
+            }, 500);
+    }
+
+    $(function(){
+        selectMarkerText()
+    })
+
+    $("body").click(function() {
+        selectMarkerText()
+    })
 
     var imgMarker = "http://www.clker.com/cliparts/w/O/e/P/x/i/map-marker-hi.png"
     $(".imgDiv").click(function() {
@@ -95,11 +113,14 @@
 
     var mouseClicked = function (mouse) {
 
+
         //Unecesary condition
         var markerText = "";
         if ($("#markerText").val() == "") {
+            $("#markerText").addClass("is-invalid")    
             return;
         } else {
+            $("#markerText").removeClass("is-invalid")
             markerText = $("#markerText").val();
             $("#markerText").val("");
         }

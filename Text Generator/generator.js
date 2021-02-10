@@ -90,7 +90,7 @@ var finalChaos = 0;
 // - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 $("#generate").on("click", function(){
-  var chaosIncrement = Math.round($("#chaosInput").val()/2000)
+  var chaosIncrement = Math.round($("#chaosInput").val()/1000)
   var genRate = Math.sqrt(parseInt($("#dice").val())+ parseInt(chaosIncrement))
   generate(Math.round(genRate))
   var initalChaos = parseInt($("#chaosInput").val()) 
@@ -99,15 +99,39 @@ $("#generate").on("click", function(){
 
 const generatePob =
 {
-  "Standard": 90,
-  "Advanced": 8,
-  "Special": 2
+  "Standard": 85,
+  "Advanced": 95,
+  "Special": 100
 }
 
 const specialText=
 {
-  "1": {"prob": 10, "text": "" }
+  "1":{
+    "prob": 10, 
+    "reward":"0$", 
+    "chaos": 99, 
+    "dificultad":"10",
+    "text": "Abistado OVNI por un grangero borracho cuando paseaba a las cabras por la noche",
+    "extraReward":"Los investigadores hallaron una nave Mi-Go, no obstante no llegaron a descubrir que hacian. Reducion de final de Caos +200 " 
+  },
+  "2":{
+    "prob": 10, 
+    "reward":"0$", 
+    "chaos": 99, 
+    "dificultad":"10",
+    "text": "Abistado unos seres voladores extraños por un campista cerca de una mina avandonada por la noche",
+    "extraReward":"Los investigadores hallaron una nave Mi-Go en el interior de la mina, no obstante no llegaron a descubrir que hacian. Reducion de final de Caos +200 " 
+  },
+  "3":{
+    "prob": 10, 
+    "reward":"0$", 
+    "chaos": 99, 
+    "dificultad":"10",
+    "text": "Abistado un meteorito que parecia moverse en el cielo de forma inusual",
+    "extraReward":"Los investigadores hallaron una nave Mi-Go oculta en tras un campo de camuflage en medio de un bosque, no obstante no llegaron a descubrir que hacian. Reducion de final de Caos +200 " 
+  }
 }
+
 
 function generate(num){
   $("#imputrContainer").hide()
@@ -116,8 +140,17 @@ function generate(num){
   $("#outputTable").empty()
 
   for(line in lines){
-    //generateStandarRow(lines,line)
-    generateAvancedRow(lines,line)
+    var rand = Math.round(Math.random()*100)
+    
+    if(rand <= generatePob["Standard"]){
+      generateStandarRow(lines,line)
+    }
+    if(rand > generatePob["Standard"] && rand <= generatePob["Advanced"]){
+      generateAvancedRow(lines,line)
+    }
+    if(rand > generatePob["Advanced"] && rand <= generatePob["Special"]){
+      generateSpecialRow(line)
+    }
   }
 
   //Datatables
@@ -128,7 +161,28 @@ function generate(num){
 
   $("#sucessButon").on("click",function(){
     $("#infoModalSection").hide()
+    $("#failModalSection").hide()
     $("#extraModalSection").show()
+  })
+
+  $("#failButon").on("click",function(){
+
+    var emotion = generateProbText(emotionProb)
+    var failiure = generateProbText(failiureRewardProb)
+
+    $("#emotionText").text("")
+    $("#failiureText").text("")
+
+    if(emotionProb[emotion].text != "Nada"){
+      $("#emotionText").text(emotionProb[emotion].text)
+    }
+    if(failiureRewardProb[failiure].text != "Nada"){
+      $("#failiureText").text(failiureRewardProb[failiure].text)
+    }
+
+    $("#infoModalSection").hide()
+    $("#extraModalSection").hide()
+    $("#failModalSection").show()
   })
 
 }
@@ -145,15 +199,21 @@ function generateAvancedRow(lines,line){
   var chaosClass = chaos >= 100? "chaos-"+Math.floor(chaos/100): ""
   var extraReward  =  generateExtraReward();
 
-  reward =  Math.round((parseInt(reward)*0.14)*10) + Math.round(Math.random()*20)*100 
+  reward =  Math.round((parseInt(reward)*0.14)*10) + Math.round(Math.random()*20)*100 + (realDificulty-10) * 150
 
   if(extraReward == "Nada"){
     extraReward  =  generateExtraReward();
   }else{
     var temp  =  generateExtraReward();
-    if(temp != "Nada"){
-      extraReward += "<br>"+ temp
+    if(temp == "Nada"){
+      temp = "Reducion de indice General de Caos X2"
     }
+    extraReward += "<br>"+ 
+                    "<div class='advancedRewardMesage pt-3'>"+
+                      "Recompensa Extra Avanzada"+
+                      "<br>"+
+                      "<div class='advancedReward'>"+temp+"</div>"
+                    "</div>"
   }
 
   $("#outputTable").append('<tr>'+
@@ -178,6 +238,39 @@ function generateAvancedRow(lines,line){
 
 }
 
+
+
+function generateSpecialRow(line){
+  var index = generateProbText(specialText);
+  var dificulty = specialText[index]["dificultad"]
+  var evaluation = Math.sqrt((($("#eval").val())/3))+1
+  var error =  Math.round(dificulty / evaluation)
+  var realDificulty = specialText[index]["dificultad"]
+  var reward = specialText[index]["reward"]   
+  var state  =  generateState(); 
+  var chaos = specialText[index]["chaos"]  
+  var chaosClass = chaos >= 100? "chaos-"+Math.floor(chaos/100): ""
+  var extraReward  =  specialText[index]["extraReward"]  
+
+  $("#outputTable").append('<tr>'+
+    '<th class="align-middle" scope="row">'+(line)+'</th>'+
+    '<td class="align-middle">'+specialText[index]["text"]+ '</td>'+
+    '<td class="align-middle">'+dificulty+' <span class="reduccion">&#177;'+error+'</span></td>'+ 
+    '<td class="align-middle">'+reward+'</td>'+
+    '<td class="align-middle">'+state+'</td>'+
+    '<td class="align-middle text-center chaos '+chaosClass+'">'+chaos+'</td>'+
+    '<td class="align-middle text-center"><button id="butom-'+line+'" data-bs-toggle="modal" data-bs-target="#modal" type="button" class="btn btn-primary btn-sm">Reclamar</button></td>'+
+  '</tr>')
+
+  $("#butom-"+line).data("realDificulty",realDificulty)
+  $("#butom-"+line).data("extraReward",extraReward)
+  $("#butom-"+line).data("chaos",chaos)
+  $("#butom-"+line).data("text",specialText[index]["text"])
+  $("#butom-"+line).data("number",line)
+  $("#butom-"+line).data("state",state)
+
+  addModal("#butom-"+line)
+}
 
 function generateStandarRow(lines,line){
     var dificulty = Math.round(5 + (Math.random()*100)%25)
@@ -231,6 +324,7 @@ function addModal(butomId){
     
     $("#infoModalSection").show()
     $("#extraModalSection").hide()
+    $("#failModalSection").hide()
 
     $("#misionCode").text("#" +number)
     $("#description-text").text(text)
@@ -289,6 +383,76 @@ function generateReward(){
   return 0
 }
 
+const failiureRewardProb ={
+  "0": {"text": "Nada", "prob": 200},
+  "1": {"text": "-500$", "prob": 15},
+  "2": {"text": "-1000$", "prob": 20},
+  "3": {"text": "-1500$", "prob": 30},
+  "4": {"text": "-2000$", "prob": 35},
+  "5": {"text": "-3000$", "prob": 30},
+  "6": {"text": "-5000$", "prob": 25},
+  "7": {"text": "-6000$", "prob": 20},
+  "8": {"text": "-8000$", "prob": 15},
+  "9": {"text": "-10000$", "prob": 10},
+  "10": {"text": "-12000$", "prob": 5},
+  "11": {"text": "El equipo perdio uno de los artefactos primigenios que llevavan", "prob": 20},
+  "12": {"text": "El equipo perdio uno de los artefactos arcanos que llevavan", "prob": 20},
+  "13": {"text": "-1 Azul", "prob": 15},
+  "14": {"text": "-2 Azules", "prob": 20},
+  "15": {"text": "-3 Azules", "prob": 25},
+  "16": {"text": "-4 Azules", "prob": 30},
+  "17": {"text": "-5 Azules", "prob": 25},
+  "18": {"text": "-6 Azules", "prob": 20},
+  "19": {"text": "-8 Azules", "prob": 15},
+  "20": {"text": "-10 Azules", "prob": 10}
+}
+
+
+
+const emotionProb =
+{
+  "0": {"text": "Nada", "prob": 80},
+  "1": {"text": "Reduce el Esfuezo de todos los Investigadores", "prob": 10},
+  "2": {"text": "Reduce la Lealtad de todos los Investigadores", "prob": 10},
+  "3": {"text": "Reduce la Felicidad de todos los Investigadores", "prob": 10},
+  "5": {"text": "Reduce la Felicidad de uno de los Investigadores", "prob": 8},
+  "6": {"text": "Reduce el Esfuezo de uno de los Investigadores", "prob": 8},
+  "7": {"text": "Reduce la Lealtad de uno de los Investigadores", "prob": 8},
+  "8": {"text": "Reduce la Felicidad y Lealtad de uno de los Investigadores", "prob": 6},
+  "9": {"text": "Reduce la Felicidad y Esfuerzo de uno de los Investigadores", "prob": 6},
+  "10": {"text": "Reduce la Lealtad y Esfuerzo de uno de los Investigadores", "prob": 6},
+  "11": {"text": "Reduce la Felicidad y Lealtad de todos los Investigadores", "prob": 4},
+  "12": {"text": "Reduce la Felicidad y Esfuerzo de todos los Investigadores", "prob": 4},
+  "13": {"text": "Reduce la Lealtad y Esfuerzo de todos los Investigadores", "prob": 4},
+  "14": {"text": "Reduce la Lealtad, Felicidad y Esfuerzo de todos los Investigadores", "prob": 2},
+  "15": {"text": "Reduce la Lealtad, Felicidad y Esfuerzo de uno de los Investigadores", "prob": 2},
+  "16": {"text": "Reduce en 2 el Esfuezo de todos los Investigadores", "prob": 5},
+  "17": {"text": "Reduce en 2 la Lealtad de todos los Investigadores", "prob": 5},
+  "18": {"text": "Reduce en 2 la Felicidad de todos los Investigadores", "prob": 5},
+  "19": {"text": "Reduce en 2 la Felicidad de uno de los Investigadores", "prob": 8},
+  "20": {"text": "Reduce en 2 el Esfuezo de uno de los Investigadores", "prob": 8},
+  "21": {"text": "Reduce en 2 la Lealtad de uno de los Investigadores", "prob": 8}
+  
+}
+
+
+
+function generateProbText(probText,probMax){
+  if(probMax==undefined){
+    probMax = countProbMax(probText)
+  }
+  rand = (Math.round(Math.random()*probMax *10)%probMax)
+
+    for (prob in probText){
+      if(parseInt(probText[prob]["prob"]) >= rand){
+        return prob
+      }else{
+        rand -= parseInt(probText[prob]["prob"])
+      }
+    }
+
+  return 0
+}
 
 const extraRewardProb ={
   "0": {"text": "Nada", "prob": 80},
@@ -326,8 +490,8 @@ const extraRewardProb ={
   "32": {"text": "Artefacto Primigenio +7", "prob": 1},
   "33": {"text": "Artefacto Primigenio +8", "prob": 1},
   "34": {"text": "Artefacto Primigenio +9", "prob": 1},
-  "35": {"text": "El equipo pierde uno de los artefactos primigenios que llevavan", "prob": 5},
-  "36": {"text": "El equipo pierde uno de los artefactos arcanos que llevavan", "prob": 5},
+  "35": {"text": "El equipo tuvo un ligero incidente y perdio uno de los artefactos primigenios que llevavan", "prob": 5},
+  "36": {"text": "El equipo tuvo un ligero incidente y perdio uno de los artefactos arcanos que llevavan", "prob": 5},
   "37": {"text": "+100 Extra reducion del indice de caos", "prob": 10},
   "38": {"text": "+200 Extra reducion del indice de caos", "prob": 10},
   "39": {"text": "+500 Extra reducion del indice de caos", "prob": 5},
@@ -361,15 +525,42 @@ const extraRewardProb ={
   "67": {"text": "-1 Azules", "prob": 1},
   "68": {"text": "-2 Azules", "prob": 1},
   "69": {"text": "-4 Azules", "prob": 1},
+  "70": {"text": "Incrementa la Felicidad de todos los Investigadores", "prob": 5},
+  "71": {"text": "Incrementa el Esfuezo de todos los Investigadores", "prob": 5},
+  "72": {"text": "Incrementa la Lealtad de todos los Investigadores", "prob": 5},
+  "73": {"text": "Experiencia X2 a todos los investigadores", "prob": 5},
+  "74": {"text": "Experiencia X3 a todos los investigadores", "prob": 5},
+  "75": {"text": "Incrementa la Felicidad de uno de los Investigadores", "prob": 10},
+  "76": {"text": "Incrementa el Esfuezo de uno de los Investigadores", "prob": 10},
+  "77": {"text": "Incrementa la Lealtad de uno de los Investigadores", "prob": 10},
+  "78": {"text": "Experiencia X2 a uno de los investigadores", "prob": 10},
+  "79": {"text": "Experiencia X3 a uno de los investigadores", "prob": 10},
+  "79": {"text": "Incrementa la Felicidad y Lealtad de uno de los Investigadores", "prob": 5},
+  "80": {"text": "Incrementa la Felicidad y Esfuerzo de uno de los Investigadores", "prob": 5},
+  "81": {"text": "Incrementa la Lealtad y Esfuerzo de uno de los Investigadores", "prob": 5},
+  "82": {"text": "Incrementa la Felicidad y Lealtad de todos los Investigadores", "prob": 2},
+  "83": {"text": "Incrementa la Felicidad y Esfuerzo de todos los Investigadores", "prob": 1},
+  "84": {"text": "Incrementa la Lealtad y Esfuerzo de todos los Investigadores", "prob": 1}
+
 }
 
-const extraRewardProbMax = 700
+const extraRewardProbMax = 784
 
 function countExtraRewardProbMax(){
   var toRet=0;
 
   for(reward in extraRewardProb){
     toRet+= parseInt(extraRewardProb[reward]["prob"])
+  }
+  
+  return toRet;
+}
+
+function countProbMax(jSon){
+  var toRet=0;
+
+  for(line in jSon){
+    toRet+= parseInt(jSon[line]["prob"])
   }
   
   return toRet;

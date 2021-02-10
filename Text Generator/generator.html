@@ -91,11 +91,11 @@
             
             <button type="button" class="btn btn-success modal-butom"  id="sucessButon">Exito!</button>
             <span id="localization"></span>
-            <button type="button" class="btn btn-danger modal-butom" data-bs-dismiss="modal">Fracaso</button>
+            <button type="button" class="btn btn-danger modal-butom" id="failButon">Fracaso</button>
           </div>
         </div>
         <div id="extraModalSection">
-          <div class="modal-body" id="modal-body">
+          <div class="modal-body" id="suces-modal-body">
             <div>
               Los investigadores han completado con <strong class="text-success">exito</strong> la mision, por
               lo que han reducido el indice de caos general de <span id="mesageState"></span> en 
@@ -103,6 +103,18 @@
               puntos. <span id="extraRewardMesage">Ademas gracias a sus investigaciones, han encontrado:</span>
             </div>
             <div class="text-center mt-3" id="extraReward"></div>
+          </div>
+          <div class="pb-3 pt-1 d-flex justify-content-center">
+            <button type="button" class="btn btn-info btn-lg" data-bs-dismiss="modal">Finalizar Mision</button>
+          </div>
+        </div>
+        <div id="failModalSection">
+          <div class="modal-body" id="fail-modal-body">
+            <div>
+              <p  class="text-center">Los investigadores no han consigido finalizar la mision.</p>
+              <div id="emotionText" class="text-center"></div>
+              <div id="failiureText" class="text-center"></div>
+            </div>
           </div>
           <div class="pb-3 pt-1 d-flex justify-content-center">
             <button type="button" class="btn btn-info btn-lg" data-bs-dismiss="modal">Finalizar Mision</button>
@@ -151,6 +163,14 @@
     font-weight: bold;
     color: #0077ff;
   }
+  .advancedRewardMesage{
+    font-weight: bold;
+    color: #189100;
+  }
+  .advancedReward{
+    font-weight: bold;
+    color: #00c0b0;
+  }
   #death{
     color: #f44336;
   }
@@ -160,6 +180,15 @@
   .strong-bold{
     font-weight: bold!important;
   }
+  #emotionText{
+    font-weight: bold;
+    color: #ff7b00;
+  }
+  #failiureText{
+    font-weight: bold;
+    color: #00c5b5;
+  }
+
 </style>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
