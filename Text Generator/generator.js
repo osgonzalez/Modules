@@ -90,8 +90,8 @@ var finalChaos = 0;
 // - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 $("#generate").on("click", function(){
-  var chaosIncrement = Math.round($("#chaosInput").val()/1000)
-  var genRate = Math.sqrt(parseInt($("#dice").val())+ parseInt(chaosIncrement))
+  var chaosIncrement = Math.round($("#chaosInput").val()/800)
+  var genRate = Math.sqrt(parseInt($("#dice").val()) * 1.2 + parseInt(chaosIncrement))
   generate(Math.round(genRate))
   var initalChaos = parseInt($("#chaosInput").val()) 
   finalChaos = Math.round(chaosTotalIncrement + initalChaos + initalChaos * chaosPercentIncrement)
@@ -109,7 +109,7 @@ const specialText=
   "1":{
     "prob": 10, 
     "reward":"0$", 
-    "chaos": 99, 
+    "chaos": 98, 
     "dificultad":"10",
     "text": "Abistado OVNI por un grangero borracho cuando paseaba a las cabras por la noche",
     "extraReward":"Los investigadores hallaron una nave Mi-Go, no obstante no llegaron a descubrir que hacian. Reducion de final de Caos +200 " 
@@ -125,10 +125,26 @@ const specialText=
   "3":{
     "prob": 10, 
     "reward":"0$", 
-    "chaos": 99, 
+    "chaos": 104, 
     "dificultad":"10",
     "text": "Abistado un meteorito que parecia moverse en el cielo de forma inusual",
     "extraReward":"Los investigadores hallaron una nave Mi-Go oculta en tras un campo de camuflage en medio de un bosque, no obstante no llegaron a descubrir que hacian. Reducion de final de Caos +200 " 
+  },
+  "4":{
+    "prob": 8, 
+    "reward":"0$", 
+    "chaos": 97, 
+    "dificultad":"8",
+    "text": "Abistados extraños seres cerca de una mina abandonada",
+    "extraReward":"Los investigadores hallaron una nave Mi-Go oculta en tras un campo de camuflage cerca de la mina, no obstante no llegaron a descubrir que hacian. Reducion de final de Caos +200 " 
+  },
+  "5":{
+    "prob": 5, 
+    "reward":"0$", 
+    "chaos": 109, 
+    "dificultad":"9",
+    "text": "Un leñador borracho informo de mosquitos gigantes en la base de una montaña cercana a la policia local",
+    "extraReward":"Los investigadores hallaron una nave Mi-Go oculta en tras un campo de camuflage cerca de la montaña, no obstante no llegaron a descubrir que hacian. Reducion de final de Caos +200 " 
   }
 }
 

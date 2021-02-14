@@ -1,3 +1,3 @@
 .vscode/*
-Image Viewer/images/*.png
-Image Viewer/images/*.jpg
+Image Viewer/images/*
+Image Viewer/middle/viewerImages

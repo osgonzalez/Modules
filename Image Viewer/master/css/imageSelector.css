@@ -165,7 +165,9 @@ div .dz-preview{
 
 .brightness {
   box-shadow: 1px 0px 13px 8px rgb(204, 202, 239), 0 6px 20px 0 rgba(10, 51, 145, 0.46);
-
+  /* temp */
+  background: rgb(204, 202, 239,0.9);
+  border-radius: 2px;
 }
  
 
