@@ -23,7 +23,11 @@ $(function() {
 
                         if(numOfImages <= 1 ){
                                 for(var img in response.images.files){
-                                    $("#imgShow").append('<img class="imgFull" src="'+response.images.files[img]+'">');                                 
+                                    //$("#imgShow").append('<img class="imgFull" src="'+response.images.files[img]+'">');  
+                                    
+                                    $("#imgShow").append('<div class="row" id="rowUnique" style="justify-content: center;margin-bottom: 1%;width:100%; height: 98%"></div>');                              
+                                    $("#rowUnique").append('<div class="inFlex" style="margin-bottom: 1%;width:100%; height: 100%"><img class="imgToShow" src="'+response.images.files[img]+'"></div>');                              
+                             
                                 }
                         }else{
                             switch(response.images.canvasSelector){
