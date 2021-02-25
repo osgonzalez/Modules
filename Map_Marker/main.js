@@ -115,6 +115,13 @@
 
     setInterval(main, (1000 / 60)); // Refresh 60 times a second
 
+    $("#saveButom").click(function(){
+        uploadData()
+    })
+
+    setTimeout(function(){
+        loadData()
+    },400)
 })
 
     function addCardMarker(marker, counter){
@@ -227,3 +234,92 @@
             context.fillText(markerText, tempMarker.XPos + (tempMarker.Width / 2), tempMarker.YPos - 5);
         }
     };
+
+
+
+
+function saveMarkers(){
+    var toRet = {};
+
+    for(mark in Markers){
+        toRet[mark] ={
+            "src": Markers[mark].Sprite.src,
+            "Width": Markers[mark].Width,
+            "Height": Markers[mark].Height,
+            "XPos": Markers[mark].XPos,
+            "YPos": Markers[mark].YPos,
+            "markerText": Markers[mark].markerText,
+            "markerDescription": Markers[mark].markerDescription
+        }
+    }
+
+    return toRet;
+}
+
+
+function loadMarkers(dataJson){
+
+    Markers = {}
+    $("#cardContainer").empty()
+
+    for(mark in dataJson){
+        var marker = new Marker();
+        marker.Sprite.src = dataJson[mark].src;
+        marker.XPos = parseFloat(dataJson[mark].XPos);
+        marker.YPos = parseFloat(dataJson[mark].YPos);
+        marker.markerText = dataJson[mark].markerText;
+        marker.markerDescription = dataJson[mark].markerDescription;
+        
+        addCardMarker(marker,mark)
+        Markers[mark] = marker;
+
+        if(markerCounter <= parseInt(mark)){
+            markerCounter = parseInt(mark) +1
+        }
+    }
+
+}
+
+
+function loadData(){
+    var url = "imgs/mapa1/data.json";
+    
+    try{
+        $.ajax({
+            url:   url,
+            type:  'post',
+            beforeSend: function () {
+                console.log("Waiting...");
+            },
+            success:  function (response) { 
+                console.log("donne...");
+                loadMarkers(toJson(response))
+            }
+        })
+    }catch(error){
+        console.log(error)
+    }
+
+}
+
+
+
+function uploadData(){
+    var data= saveMarkers();
+
+    $.ajax({
+        url: "./saveData.php",
+        method: "POST", 
+        data: data
+      })
+}
+
+
+function toJson(str) {
+    try {
+        var toRet = JSON.parse(str);
+        return toRet;
+    } catch (e) {
+        return str;
+    }
+}
