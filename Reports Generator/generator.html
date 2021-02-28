@@ -12,66 +12,58 @@
 
 <body>
   <div id="tableContainer" class="container">
-    <table id="mainTable" class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col" class="">#</th>
-          <th scope="col" class="">Description</th>
-          <th scope="col" class="">Dificuldad</th>
-          <th scope="col" class="">Reward</th>
-          <th scope="col" class="">Lugar</th>
-          <th scope="col" class="">Caos</th>
-          <th scope="col" class="text-center"></th>
-        </tr>
-      </thead>
-      <tbody id="outputTable">
-      </tbody>
-    </table>
-
-  </div>
-
-
   <div id="imputrContainer" class="container m-5 p-5">
     <div class="d-flex justify-content-center">
       <div>
-        <div class="row" style="max-width: 6cm;">
+        <div class="row" style="max-width: 12cm;">
           <label for="dice">Resultado busqueda</label>
-          <input type="number" class="form-control" id="dice">
+          <input type="number" class="form-control" id="dice" value="999">
         </div>
-        <div class="row mt-3" style="max-width: 6cm;">
-          <label for="eval">Resultado evaluacion</label>
-          <input type="number" class="form-control" value="1" id="eval">
-        </div>
-        <div class="row mt-3" style="max-width: 6cm;">
-          <label for="continent">Continente a inspeccionar</label>
-          <select class="form-control" id="continent">
-            <option value="NAmerica" selected="selected">Norte America</option>
-            <option value="SAmerica">Sur America</option>
-            <option value="Europe">Europa</option>
-            <option value="Asia">Asia</option>
-            <option value="Africa">Africa</option>
-            <option value="Oceania">Oceania</option>
-            <option value="NPole">Polo Norte</option>
-            <option value="SPole">Polo Sur</option>
-          </select>
-        </div>
-        <div class="row mt-3" style="max-width: 6cm;">
+        <div class="row mt-3" style="max-width: 12cm;">
           <label for="chaosInput">Indice de Caos Actual</label>
           <input type="number" class="form-control" value="1" id="chaosInput">
         </div>
-        <div class="row mt-3" style="max-width: 6cm;">
-          <label for="groupInput">Modificador de grupos</label>
-          <input type="number" class="form-control" value="1" id="groupInput">
+        <div class="row" style="max-width: 12cm;">
+          <label for="dice">Agentes disponibles</label>
+          <textarea class="form-control" id="agents" rows="4"></textarea>
         </div>
+
+        <div class="row my-5" style="max-width: 12cm;">
+          <h4 class="mb-3">Elija el modo de selección de misiones</h4>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="preferemces" value="Chaos" id="Chaos" checked>
+            <label class="form-check-label" for="Chaos">
+              Reducir el Caos es lo fundamental
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="preferemces" value="Reward" id="Reward" >
+            <label class="form-check-label" for="Reward">
+              Los beneficios son lo fundamental
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="preferemces" value="Hybrid" id="Hybrid" >
+            <label class="form-check-label" for="Hybrid">
+              Un enfoque balanceado es la mejor estategia
+            </label>
+          </div>
+        </div>
+        <div class="form-check">
+          <label for="riskIndex" class="form-label">Margen de riesgo (<span id="riskValue">150</span>%)</label>
+          <input type="range" class="form-range" id="riskIndex" min="0.2" max="4" value="1.5" step="0.1">
+        </div>
+        
         <div class="mt-4 d-flex m-auto justify-content-center" >
-          <button id="generate" type="button" class="btn btn-primary btn-lg center">Buscar Misiones</button>
+          <button id="generate" type="button" class="btn btn-primary btn-lg center">Generar informe</button>
         </div>  
       </div>
     </div>
-
-
-
   </div>
+
+<div class="container" id="logs">
+
+</div>
 
   <!-- Modal -->
   <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
@@ -132,66 +124,58 @@
 
 </body>
 <style>
-  .black {
-    background-color: black !important;
-    color: black !important;
+#logs {
+  background-color: black;
+  background-image: radial-gradient(rgba(0, 150, 0, 0.75), black 120%);
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  padding: 2rem;
+  color: white;
+  font: 1.3rem Inconsolata, monospace;
+  text-shadow: 0 0 5px #C8C8C8;
+}
+#logs::after {
+  content: "";
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px);
+  pointer-events: none;
+}
+
+#logs .terminal{
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden!important;;
+  animation: type 2s steps(50, end);
+}
+
+#logs .result{
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden!important;;
+  animation: type 1s steps(50, end);
+}
+
+.redFont{
+  color: red;
+}
+
+.blueFont{
+  color: blue;
+}
+
+@keyframes type {
+  0%{
+    width: 0;
   }
-  .reduccion {
-    font-size: .6em;
-    color: #ff4b00;
+  100%{
+    width: 100% ;
   }
-  .chaos-1{
-    font-weight: bold;
-    color: #f4433696;
-  }
-  .chaos-2{
-    font-weight: bold;
-    color: #f44336c0;
-  }
-  .chaos-3{
-    font-weight: bold;
-    color: #f44336;
-  }
-  .chaos-4, .chaos-5, .chaos-6{
-    font-weight: bold;
-    color: #ff0000;
-  }
-  #extraReward{
-    color: #f44336;
-  }
-  .modal-butom{
-    font-weight: bold!important;
-    width: 100px;
-  }
-  #extraReward{
-    font-weight: bold;
-    color: #0077ff;
-  }
-  .advancedRewardMesage{
-    font-weight: bold;
-    color: #189100;
-  }
-  .advancedReward{
-    font-weight: bold;
-    color: #00c0b0;
-  }
-  #death{
-    color: #f44336;
-  }
-  #dificulty{
-    color: #004aff;
-  }
-  .strong-bold{
-    font-weight: bold!important;
-  }
-  #emotionText{
-    font-weight: bold;
-    color: #ff7b00;
-  }
-  #failiureText{
-    font-weight: bold;
-    color: #00c5b5;
-  }
+}
 
 </style>
 
@@ -206,7 +190,9 @@
 <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" rel="stylesheet" >
 
 <script src="./generator.js"></script>
-<script src="./data.js"></script>
+<!-- <script src="./typeWriting/typewriting.js"></script>
+<link href="./typeWriting/_cursor.css" rel="stylesheet" > -->
+
 
 
 

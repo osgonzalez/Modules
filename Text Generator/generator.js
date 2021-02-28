@@ -92,7 +92,13 @@ var finalChaos = 0;
 $("#generate").on("click", function(){
   var chaosIncrement = Math.round($("#chaosInput").val()/800)
   var genRate = Math.sqrt(parseInt($("#dice").val()) * 1.2 + parseInt(chaosIncrement))
-  generate(Math.round(genRate))
+  var groupValue = parseInt($("#groupInput").val());
+  
+  if(groupValue > 1){
+    genRate = (genRate / (groupValue* 0.75 )) + groupValue*0.5
+  }
+  
+  generate(Math.ceil(genRate))
   var initalChaos = parseInt($("#chaosInput").val()) 
   finalChaos = Math.round(chaosTotalIncrement + initalChaos + initalChaos * chaosPercentIncrement)
 })
@@ -100,7 +106,7 @@ $("#generate").on("click", function(){
 const generatePob =
 {
   "Standard": 85,
-  "Advanced": 95,
+  "Advanced": 90,
   "Special": 100
 }
 
