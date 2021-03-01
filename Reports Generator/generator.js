@@ -2,47 +2,23 @@ const chaosTotalIncrement = 2000; //average of 100 per mision
 const chaosPercentIncrement = 0.05;
 var finalChaos = 0;
 
-const maxDificulty = 50;
+const maxDificulty = 70; //The final dificulty is maxDificulty +10
 
-var riskIndex = 1.2
+var minSuccesRisk = 1.2
 var errorMargin = 0.2
 
 var quests = [];
-var agents = [
-  {
-    "name":"a",
-    "puntuation": 15,
-    "extra": 1
-  },
-  {
-    "name":"b",
-    "puntuation": 12,
-    "extra": 2
-  },
-  {
-    "name":"c",
-    "puntuation": 50,
-    "extra": 3
-  },
-  {
-    "name":"d",
-    "puntuation": 20,
-    "extra": 4
-  },
-  {
-    "name":"e",
-    "puntuation": 6,
-    "extra": 5
-  }
-];
+var agents = [];
 
 var logs = []
+
 
 // ***************************
 // Quests functions
 // ***************************
 
-function generateQuests(){
+function generateAllQuests(){
+  quests= []
   var chaosIncrement = Math.round($("#chaosInput").val()/800)
   var genRate = Math.sqrt(parseInt($("#dice").val()) * 1.2 + parseInt(chaosIncrement))
   var generateNumber = Math.ceil(genRate)
@@ -50,16 +26,16 @@ function generateQuests(){
   for (var i = 0; i < generateNumber; i++){
     quests.push(generateStandarQuest())
   }
-  
- 
+
 }
 
 function generateStandarQuest(){
-  var dificulty = Math.round(5 + (Math.random()*100)%maxDificulty)
+  var dificulty = Math.round(10 + (Math.random()*maxDificulty))
   var reward = generateReward()
   // var extraReward  =  generateExtraReward();
   var chaosMultiplier = parseInt(rewardProb[reward]["chaosIndex"]) +  (0.05 * dificulty)  //Max 3 + 1.5
-  var chaos = 20 + Math.round(((Math.random()*80) *  chaosMultiplier)/5)*5 
+  var chaos = 20 + Math.ceil(((Math.random()*80) *  chaosMultiplier)/5)*5 
+  
 
   var chaosPerDiff = chaos / dificulty;
   var rewardPerDiff = reward / dificulty;
@@ -105,7 +81,7 @@ function asingAgentToQuest(){
       break;
     }
 
-    var index = selectAgentForDiff(tempAgents, quests[quest].dificulty)
+    var index = selectBestAgentForDificulty(tempAgents, quests[quest].dificulty)
     if(index != null){
       var tempAgent = tempAgents[index];
       tempAgents.splice(index, 1);
@@ -121,48 +97,64 @@ function executeQuest(agent,quest){
   var result = {}
 
   result["code"] = "#" + randomString(8);
-  result["dificulty"] = quest.dificulty;
+  // result["dificulty"] = quest.dificulty;
   result["chaos"] = quest.chaos;
   result["reward"] = quest.reward;
 
-  var puntuation = randomDice(agent.puntuation) + agent.extra;
+  var prob =  getSuccesProb(agent,quest.dificulty)
+  result["sucess"] = randomProbResult(prob);
 
-  result["sucess"] = puntuation >= quest.dificulty
+  result["prob"] = Math.floor(prob*100) + "%"
+  console.log(Math.floor(prob*100) + "%")
+  console.log(prob)
   
-  result["diceResult"] = puntuation
   result["agentName"]= agent.name
-  result["agentPuntuation"]=  Math.floor(agent.puntuation/12) + "D12 + 1D" + agent.puntuation%12 + " + " + agent.extra
   
   logs.push(result)
 
 }
 
 
-function selectAgentForDiff(agentList,dificulty){
+function getSuccesProb(agent,dificulty){
+  var maxDificulty = dificulty * 1.5
+  var minDificulty = dificulty * 0.5
+
+  if(minDificulty >= agent.puntuation ){
+    return 0
+  }
+
+var aux = (agent.puntuation - minDificulty) / (maxDificulty - minDificulty)
+  return   aux
+}
+
+function selectBestAgentForDificulty(agentList,dificulty){
   
-  dificulty = dificulty * riskIndex;
-  var bestAgent= 0
-  var bestError = null
+  
+  var bestAgent= null
+  var bestProb = null
 
   for(agent in agentList){
-    var newError = (agentList[agent].puntuation/2 + agentList[agent].extra) - dificulty
+    var newProb = getSuccesProb(agentList[agent],dificulty)
     
-    if(newError < 0 ){
-      newError = newError * -2
-    }
-
-    if(bestError == null || newError < bestError ){
-      bestAgent = agent
-      bestError = newError;
+    if(newProb > 100){
+      if(bestProb == null || bestProb < 100 || newProb < bestProb ){
+        bestAgent = agent
+        bestProb = newProb;
+      }
+    }else{
+      if(bestProb == null || newProb > bestProb ){
+        bestAgent = agent
+        bestProb = newProb;
+      }
     }
   }
 
-
-  if( bestError > dificulty * errorMargin){
-    bestAgent = null;
+  if( bestProb == null || bestProb < minSuccesRisk){
+    return null;
+  }else{
+    return bestAgent;
   }
 
-  return bestAgent;
 }
 
 
@@ -286,14 +278,12 @@ function compareChaosAndReward(a,b){
 }
 
 function compareAgents(a,b){
-  var averageA = a.puntuation/2 + a.extra;
-  var averageB = b.puntuation/2 + b.extra;
   //a es menor que b según criterio de ordenamiento
-  if (averageA < averageB) {
+  if (a.puntuation < b.puntuation) {
     return -1;
   }
   //a es mayor que b según criterio de ordenamiento
-  if (averageA > averageB) {
+  if (a.puntuation > b.puntuation) {
     return 1;
   }
   // a debe ser igual b
@@ -309,30 +299,24 @@ function randomString(length) {
 }
 
 
-function randomDice(value){
-  var toRet = 0;
-  for(var i=0; i < Math.floor(value/12); i++){
-    toRet += Math.floor(Math.random()*10 + 1)
-  }
+function randomProbResult(successProb){
 
-  if(value%12 != 0){
-    toRet += Math.floor(Math.random()*(value%12) + 1)
-  }
-
-  return toRet
+  return Math.random() <= successProb
 }
 
 var logIndex=0
 function printResults(){
   logIndex = 0;
-  var timeOut = 500; 
+  $("#logs").append("<div class='terminal'>Se han hallado <bold class='numberOfQuest'>" + quests.length + "</bold> posibles misiones</div><br>")
+  var timeOut = 2000; 
   for(log in logs){
     setTimeout(function(){
       $("#logs").append(
         "<div class='terminal'>"+
-        logs[logIndex].code + ": Caos: "+
+        "<span style='color: #eaeb88;'>"+logs[logIndex].code + ":</span> Caos: "+
         logs[logIndex].chaos + " Recompensa: "+
-        logs[logIndex].reward + "$ Equipo Asignado: "+
+        logs[logIndex].reward + "$ Probabilidad de Exito: "+
+        logs[logIndex].prob + " Equipo Asignado: "+
         logs[logIndex].agentName+
         "</div>"
       )
@@ -354,8 +338,33 @@ function printResults(){
   }
   
 
+  
+  setTimeout(function(){
+    $("#generate").removeClass('disabled');
+  },timeOut + 1000)
+
 }
 
+
+function parseAgents(){
+  var text = $("#agents").val()
+  if( text != ""){
+    agents = []
+
+    try{
+      var lines = String(text).split("\n")
+      for(var line in lines){
+        var tokens = lines[line].split("\t")
+        agents.push(  {
+          "name":tokens[0],
+          "puntuation": tokens[1]
+        })
+      }
+    }catch(error){
+      alert("Parsing Exception")
+    }
+  }
+}
 
 
 
@@ -363,23 +372,50 @@ function printResults(){
 // Document Ready
 // ***************************
 
-$(function(){
-  //$("#tableContainer").hide()
-  // $('#mainTable').DataTable();
 
-  $("#riskIndex").change(function(){
-    riskIndex = Math.round(parseFloat($(this).val())*100)/100
-    $('#riskValue').text(Math.round((riskIndex)*100))
+
+$(function(){
+  $("#logs").hide();
+  $("#back").hide();
+
+  $("#back").click(function(){
+    $("#logs").hide();
+    $("#back").hide();
+    $("#imputrContainer").show();
+  })
+
+
+  $("#riskIndex").on('input',function(){
+    minSuccesRisk = Math.round(parseFloat($(this).val())*100)/100
+    $('#riskValue').text(Math.round((minSuccesRisk)*100))
 
   })
 
 
   $("#generate").click(function(){
-    logs= []
-    generateQuests()
-    asingAgentToQuest()
-    printResults()
+    $("#generate").addClass('disabled');
+    //$("#imputrContainer").hide();
+    $("#logs").show();
+    $("#back").show();
+
+      
+      logs= []
+      
+
+      parseAgents()
+      generateAllQuests()
+      asingAgentToQuest()
+      printResults()
+    
+
   })
 })
 
 
+
+
+//TOdo
+// Biblioteca Protentage
+// Paises Superficie / Bases
+// Nivel Comunicaciones
+// Nivel Transporte
