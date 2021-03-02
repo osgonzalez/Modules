@@ -116,6 +116,18 @@ function asingAgentToQuest() {
 
     //Solve pair quests
 
+    if (orderType == "Chaos") {
+      undoQuest.sort(compareChaos)
+    }
+    if (orderType == "Reward") {
+      undoQuest.sort(compareReward)
+    }
+    if (orderType == "Hybrid") {
+      undoQuest.sort(compareChaosAndReward)
+    }
+  
+    undoQuest.reverse()
+
     for (var quest in undoQuest) {
 
       if (pairAgents.length == 0) {
@@ -142,16 +154,42 @@ function executeQuest(agent, quest) {
   var result = {}
 
   result["code"] = "#" + randomString(8);
-  // result["dificulty"] = quest.dificulty;
+
+
+  var cardTypes = Object.keys(cardsEfects)
+  var realRandom = Math.floor((Math.random() * 10 * quest.dificulty * agent.puntuation) % cardTypes.length)
+  var cardType = cardTypes[realRandom]
+  
+  var cardColors = Object.keys(cardsEfects[cardType])
+  var realRandom = Math.floor((Math.random() * 10 + quest.dificulty + agent.puntuation) % cardColors.length)
+  var cardColor = cardColors[realRandom]
+
+  result["cardType"] =  cardType;
+  result["cardColor"] = cardColor
+
+  console.log(cardType + " -> "+ cardColor)
+  var cardsEfect = cardsEfects[cardType][cardColor]
+  
+
+  result["dificulty"] = quest.dificulty;
   result["chaos"] = quest.chaos;
   result["reward"] = quest.reward;
 
   var prob = getSuccesProb(agent, quest.dificulty)
-  result["sucess"] = randomProbResult(prob);
-
   result["prob"] = Math.floor(prob * 100) + "%"
   console.log(Math.floor(prob * 100) + "%")
-  console.log(prob)
+
+
+  //Execute Card
+  result["final-dificulty"] = Math.ceil(quest.dificulty * cardsEfect["dificulty-multiplier"] + cardsEfect["dificulty-increment"])
+  result["final-chaos"] = Math.ceil(quest.chaos * cardsEfect["chaos-multiplier"] + cardsEfect["chaos-increment"])
+  result["final-reward"] = Math.ceil(quest.reward * cardsEfect["reward-multiplier"] + cardsEfect["reward-increment"])
+  prob = getSuccesProb(agent, result["final-dificulty"])
+  result["final-prob"] = Math.floor(prob * 100) + "%"
+
+  result["sucess"] = randomProbResult(prob);
+
+
 
   result["agentName"] = agent.name
 
@@ -207,6 +245,121 @@ function selectBestAgentForDificulty(agentList, dificulty) {
 // Probability jsons and functions
 // ***************************
 
+
+const cardIcons = {
+  'death': 'fas fa-skull-crossbones',
+  'money': 'fas fa-dollar-sign',
+  'comments': 'fas fa-comments-dollar',
+  'law': 'fas fa-gavel',
+  'nada': 'fas fa-yin-yang'
+}
+
+
+
+
+
+const cardsEfects = {
+  'death': {
+    "red":{
+      "reward-increment": 0,"reward-multiplier": 1, 
+      "chaos-increment": 0, "chaos-multiplier": 1,
+      "dificulty-increment": 0, "dificulty-multiplier": 1.80,
+      "description" : ""
+    },
+    "gray":{
+      "reward-increment": 0,"reward-multiplier": 1, 
+      "chaos-increment": 0, "chaos-multiplier": 1,
+      "dificulty-increment": 0, "dificulty-multiplier": 1.40,
+      "description" : ""
+    },
+    "gold":{
+      "reward-increment": 0,"reward-multiplier": 1, 
+      "chaos-increment": 0, "chaos-multiplier": 1,
+      "dificulty-increment": 0, "dificulty-multiplier": 1.20,
+      "description" : ""
+    }
+  },
+  'money': {
+    "red":{
+      "reward-increment": 0,"reward-multiplier": 0.5, 
+      "chaos-increment": 0, "chaos-multiplier": 1,
+      "dificulty-increment": 0, "dificulty-multiplier": 1,
+      "description" : ""
+    },
+    "gray":{
+      "reward-increment": 500,"reward-multiplier": 1, 
+      "chaos-increment": 0, "chaos-multiplier": 1,
+      "dificulty-increment": 0, "dificulty-multiplier": 1,
+      "description" : ""
+    },
+    "gold":{
+      "reward-increment": 0,"reward-multiplier": 2, 
+      "chaos-increment": 0, "chaos-multiplier": 1,
+      "dificulty-increment": 0, "dificulty-multiplier": 1,
+      "description" : ""
+    }
+  },
+  'comments': {
+    "red":{
+      "reward-increment": 0,"reward-multiplier": 0.75, 
+      "chaos-increment": 0, "chaos-multiplier": 1,
+      "dificulty-increment": 0, "dificulty-multiplier": 1.25,
+      "description" : ""
+    },
+    "gray":{
+      "reward-increment": 300,"reward-multiplier": 1, 
+      "chaos-increment": 0, "chaos-multiplier": 1.20,
+      "dificulty-increment": 10, "dificulty-multiplier": 1,
+      "description" : ""
+    },
+    "gold":{
+      "reward-increment": 1000,"reward-multiplier": 1, 
+      "chaos-increment": 50, "chaos-multiplier": 1,
+      "dificulty-increment": 0, "dificulty-multiplier": 0.75,
+      "description" : ""
+    }
+  },
+  'law': {
+    "red":{
+      "reward-increment": 0,"reward-multiplier": 0.75, 
+      "chaos-increment": 0, "chaos-multiplier": 1,
+      "dificulty-increment": 5, "dificulty-multiplier": 1,
+      "description" : ""
+    },
+    "gray":{
+      "reward-increment": 1000,"reward-multiplier": 1, 
+      "chaos-increment": 0, "chaos-multiplier": 1,
+      "dificulty-increment": 10, "dificulty-multiplier": 1,
+      "description" : ""
+    },
+    "gold":{
+      "reward-increment": 5000,"reward-multiplier": 1, 
+      "chaos-increment": 150, "chaos-multiplier": 1,
+      "dificulty-increment": 0, "dificulty-multiplier": 0.75,
+      "description" : ""
+    }
+  },
+  'nada': {
+    "red":{
+      "reward-increment": 0,"reward-multiplier": 1, 
+      "chaos-increment": 0, "chaos-multiplier": 0.5,
+      "dificulty-increment": 0, "dificulty-multiplier": 1,
+      "description" : ""
+    },
+    "gray":{
+      "reward-increment": 0,"reward-multiplier": 1, 
+      "chaos-increment": 100, "chaos-multiplier": 1,
+      "dificulty-increment": 20, "dificulty-multiplier": 1,
+      "description" : ""
+    },
+    "gold":{
+      "reward-increment": 0,"reward-multiplier": 1, 
+      "chaos-increment": 0, "chaos-multiplier": 2,
+      "dificulty-increment": 0, "dificulty-multiplier": 1,
+      "description" : ""
+    }
+  }
+}
 
 
 const rewardProb = {
@@ -358,13 +511,31 @@ function printResults() {
     setTimeout(function () {
       $("#logs").append(
         "<div class='terminal'>" +
-        "<span style='color: #eaeb88;'>" + logs[logIndex].code + ":</span> Caos: " +
-        logs[logIndex].chaos + " Recompensa: " +
-        logs[logIndex].reward + "$ Probabilidad de Exito: " +
-        logs[logIndex].prob + " Equipo Asignado: " +
-        logs[logIndex].agentName +
+        "<span style='color: #eaeb88;'>" + logs[logIndex].code + ":</span> "+
+        "Caos: <div class='chaos'>" + logs[logIndex].chaos + '</div>' +
+        " Recompensa: <div class='money'>" + logs[logIndex].reward + "$</div>"+
+        " Probabilidad de Exito: <div class='prob'>" + logs[logIndex].prob + '</div>' +
+        " Equipo Asignado: <div class='agentName'>" + logs[logIndex].agentName + '</div>' +
         "</div>"
       )
+
+      //Print Card
+      setTimeout(function () {
+
+        $("#logs").append('<div class="cardLog">Carta: '+
+              '<i class="'+cardIcons[logs[logIndex].cardType]+' '+logs[logIndex].cardColor+'"></i> '+
+              '('+
+              '<div class="prob">'+ logs[logIndex]["final-prob"] +'</div> '+
+              '<div class="chaos">'+ logs[logIndex]["final-chaos"]+'</div> '+
+              '<div class="money">'+ logs[logIndex]["final-reward"]+'$ </div>)'+
+              '</div>')
+          
+
+      }, 1500)
+
+
+
+      //Print Result
       setTimeout(function () {
         if (logs[logIndex].sucess) {
           $("#logs").append("<div class='result'>Result: <strong class='blueFont'>Success</strong></div><br>")
@@ -373,12 +544,12 @@ function printResults() {
         }
 
         logIndex++;
-      }, 2000)
+      }, 3000)
 
 
     }, timeOut)
 
-    timeOut += 3000;
+    timeOut += 4000;
 
   }
 
@@ -470,7 +641,7 @@ $(function () {
 
   $("#generate").click(function () {
     $("#generate").addClass('disabled');
-    //$("#imputrContainer").hide();
+    $("#imputrContainer").hide();
     $("#logs").show();
     $("#back").show();
 
