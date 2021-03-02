@@ -2,7 +2,7 @@ const chaosTotalIncrement = 2000; //average of 100 per mision
 const chaosPercentIncrement = 0.05;
 var finalChaos = 0;
 
-const maxDificulty = 70; //The final dificulty is maxDificulty +10
+const maxDificulty = 120; //The final dificulty is maxDificulty +20
 
 var minSuccesRisk = 1.2
 var errorMargin = 0.2
@@ -30,7 +30,7 @@ function generateAllQuests() {
 }
 
 function generateStandarQuest() {
-  var dificulty = Math.round(10 + (Math.random() * maxDificulty))
+  var dificulty = Math.round(20 + (Math.random() * maxDificulty))
   var reward = generateReward()
   // var extraReward  =  generateExtraReward();
   var chaosMultiplier = parseInt(rewardProb[reward]["chaosIndex"]) + (0.05 * dificulty)  //Max 3 + 1.5
@@ -514,7 +514,7 @@ function printResults() {
         "<span style='color: #eaeb88;'>" + logs[logIndex].code + ":</span> "+
         "Caos: <div class='chaos'>" + logs[logIndex].chaos + '</div>' +
         " Recompensa: <div class='money'>" + logs[logIndex].reward + "$</div>"+
-        " Probabilidad de Exito: <div class='prob'>" + logs[logIndex].prob + '</div>' +
+        " Probabilidad Exito: <div class='prob'>" + logs[logIndex].prob + '</div>' +
         " Equipo Asignado: <div class='agentName'>" + logs[logIndex].agentName + '</div>' +
         "</div>"
       )
@@ -560,18 +560,27 @@ function printResults() {
   //Calc Chaos and rewards
   var reward = 0
   var chaos = 0
+  var sucessMisions = 0
 
   for (var log in logs) {
 
     if (logs[log].sucess) {
       reward += parseInt(logs[log].reward)
       chaos += parseInt(logs[log].chaos)
+      sucessMisions++
     }
 
   }
 
   setTimeout(function () {
-    $("#logs").append("<br><div class='terminal'>Reduccion del Indice de Caos General en <bold class='chaos'>"
+    $("#logs").append("<br><div class='terminal'>Misiones finalizadas con exito "+
+    "<bold class='numberOfQuest'>"  + sucessMisions + "/" + logs.length+" </bold></div>")
+  }, timeOut)
+
+  timeOut += 2000;
+
+  setTimeout(function () {
+    $("#logs").append("<div class='terminal'>Reduccion del Indice de Caos General en <bold class='chaos'>"
       + chaos + "</bold> puntos</div>")
   }, timeOut)
 
