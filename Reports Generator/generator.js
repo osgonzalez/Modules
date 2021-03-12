@@ -397,6 +397,61 @@ function generateReward() {
   return 0
 }
 
+const extraRewardProb =[
+  {"text": "+250$", "money": 250, "chaos": 0, "blues":0, "class":"gray", "prob": 20},
+  {"text": "+500$", "money": 500, "chaos": 0, "blues":0, "class":"gray", "prob": 20},
+  {"text": "+750$", "money": 750, "chaos": 0, "blues":0, "class":"gray", "prob": 20},
+  {"text": "+1000$", "money": 1000, "chaos": 0, "blues":0, "class":"gray", "prob": 40},
+  {"text": "+1500$", "money": 1500, "chaos": 0, "blues":0, "class":"gray", "prob": 40},
+  {"text": "+2000$", "money": 2000, "chaos": 0, "blues":0, "class":"gray", "prob": 40},
+  {"text": "+2500$", "money": 2500, "chaos": 0, "blues":0, "class":"gray", "prob": 40},
+  {"text": "+3000$", "money": 3000, "chaos": 0, "blues":0, "class":"gray", "prob": 30},
+  {"text": "+5000$", "money": 5000, "chaos": 0, "blues":0, "class":"gray", "prob": 15},
+  {"text": "+8000$", "money": 8000, "chaos": 0, "blues":0, "class":"gray", "prob": 5},
+  {"text": "+10000$", "money": 10000, "chaos": 0, "blues":0, "class":"gray", "prob": 1},
+  {"text": "+15000$", "money": 15000, "chaos": 0, "blues":0, "class":"gray", "prob": 1},
+  {"text": "+200 Caos", "money": 0, "chaos": 200, "blues":0, "class":"gray", "prob": 20},
+  {"text": "+300 Caos", "money": 0, "chaos": 300, "blues":0, "class":"gray", "prob": 10},
+  {"text": "+400 Caos", "money": 0, "chaos": 400, "blues":0, "class":"gray", "prob": 5},
+  {"text": "+500 Caos", "money": 0, "chaos": 500, "blues":0, "class":"gray", "prob": 2},
+  {"text": "+500$ y +300 Caos", "money": 500, "chaos": 300, "blues":0, "class":"gray", "prob": 10},
+  {"text": "+3000$ y +100 Caos", "money": 3000, "chaos": 100, "blues":0, "class":"gray", "prob": 10},
+  {"text": "+1000$ y +300 Caos", "money": 1000, "chaos": 300, "blues":0, "class":"gray", "prob": 10},
+  {"text": "+1500$ y +150 Caos", "money": 1500, "chaos": 150, "blues":0, "class":"gray", "prob": 10},
+  {"text": "+750$ y +200 Caos", "money": 750, "chaos": 200, "blues":0, "class":"gray", "prob": 10},
+  {"text": "Libro Arcano (+0.02 Biblioteca o Venta 5 Azules)", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 5},
+  {"text": "Tomo primigenio (+0.05 Biblioteca o Venta 15 Azules)", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 5},
+  {"text": "Bestiario (+0.04 Biblioteca o 8 Venta Azules)", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 5},
+  {"text": "Arma Arcana +1 (Venta 10 Azules)", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 2},
+  {"text": "Arma Arcana +2 (Venta 15 Azules)", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 2},
+  {"text": "Arma Arcana +3 (Venta 20 Azules)", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 2},
+  {"text": "Arma Arcana +4 (Venta 25 Azules)", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 2},
+  {"text": "Artefacto Primigenio +5", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 1},
+  {"text": "Artefacto Primigenio +6", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 1},
+  {"text": "Artefacto Primigenio +7", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 1},
+  {"text": "Artefacto Primigenio +8", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 1},
+  {"text": "Artefacto Primigenio +9", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 1},
+  {"text": "Armadura Arcana +1", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 2},
+  {"text": "Artefacto Primigenio +2", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 2},
+  {"text": "Artefacto Primigenio +3", "money": 0, "chaos": 0, "blues":0, "class":"gray", "prob": 2},
+  {"text": "25 Azules", "money": 0, "chaos": 0, "blues":25, "class":"gray", "prob": 1},
+  {"text": "20 Azules", "money": 0, "chaos": 0, "blues":20, "class":"gray", "prob": 2},
+  {"text": "15 Azules", "money": 0, "chaos": 0, "blues":15, "class":"gray", "prob": 2},
+  {"text": "12 Azules", "money": 0, "chaos": 0, "blues":12, "class":"gray", "prob": 3},
+  {"text": "10 Azules", "money": 0, "chaos": 0, "blues":15, "class":"gray", "prob": 4},
+  {"text": "8 Azules", "money": 0, "chaos": 0, "blues":8, "class":"gray", "prob": 5},
+  {"text": "5 Azules", "money": 0, "chaos": 0, "blues":5, "class":"gray", "prob": 6},
+  {"text": "4 Azules", "money": 0, "chaos": 0, "blues":4, "class":"gray", "prob": 7},
+  {"text": "3 Azules", "money": 0, "chaos": 0, "blues":3, "class":"gray", "prob": 10},
+  {"text": "2 Azules", "money": 0, "chaos": 0, "blues":2, "class":"gray", "prob": 12},
+  {"text": "1 Azul", "money": 0, "chaos": 0, "blues":1, "class":"gray", "prob": 15},
+  {"text": "1 Azul y 200 Caos", "money": 0, "chaos": 200, "blues":1, "class":"gray", "prob": 10},
+  {"text": "2 Azules y 100 Caos", "money": 0, "chaos": 0, "blues":1, "class":"gray", "prob": 10},
+  {"text": "2 Azules y 300 caos", "money": 0, "chaos": 300, "blues":2, "class":"gray", "prob": 10},
+  {"text": "4 Azules y 100 caos", "money": 0, "chaos": 100, "blues":4, "class":"gray", "prob": 10},
+  {"text": "5 Azules y 500 caos", "money": 0, "chaos": 500, "blues":5, "class":"gray", "prob": 5},
+  {"text": "3 Azules y 150 caos", "money": 0, "chaos": 150, "blues":2, "class":"gray", "prob": 5}
+]
 
 function generateProbText(probText, probMax) {
   if (probMax == undefined) {
@@ -496,6 +551,13 @@ function randomString(length) {
   return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1).toUpperCase();
 }
 
+function numberWithDots(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+function scroll(){
+  $("#logs").scrollTop(1000000)
+}
 
 function randomProbResult(successProb) {
 
@@ -519,6 +581,8 @@ function printResults() {
         "</div>"
       )
 
+      scroll()
+
       //Print Card
       setTimeout(function () {
 
@@ -529,7 +593,8 @@ function printResults() {
               '<div class="chaos">'+ logs[logIndex]["final-chaos"]+'</div> '+
               '<div class="money">'+ logs[logIndex]["final-reward"]+'$ </div>)'+
               '</div>')
-          
+
+        scroll()
 
       }, 1500)
 
@@ -543,6 +608,7 @@ function printResults() {
           $("#logs").append("<div class='result'>Result: <strong class='redFont'>Failiure</strong></div><br>")
         }
 
+        scroll()
         logIndex++;
       }, 3000)
 
@@ -561,6 +627,7 @@ function printResults() {
   var reward = 0
   var chaos = 0
   var sucessMisions = 0
+  var blues = 0
 
   for (var log in logs) {
 
@@ -570,30 +637,73 @@ function printResults() {
       sucessMisions++
     }
 
+  }  
+
+  for( var extra in generatedExtraRewards){
+    chaos += generatedExtraRewards[extra]["chaos"]
+    reward += generatedExtraRewards[extra]["money"]
+    blues += generatedExtraRewards[extra]["blues"]
   }
 
   setTimeout(function () {
     $("#logs").append("<br><div class='terminal'>Misiones finalizadas con exito "+
     "<bold class='numberOfQuest'>"  + sucessMisions + "/" + logs.length+" </bold></div>")
+    scroll()
   }, timeOut)
 
   timeOut += 2000;
 
+
+  //Print Extra Rewards
+  if(generatedExtraRewards.length > 0){
+    setTimeout(function () {
+      $("#logs").append("<br><div class='terminal'>Recompensas extra obtenidas: </div>")
+      scroll()
+    }, timeOut)
+  
+    timeOut += 2000;
+
+
+    var printExtraRewards = function (text,inerClass){
+      $("#logs").append("<div class='result "+inerClass+"'>&gt "+ text +"</div>")
+      scroll()
+    }
+
+    for( var extra in generatedExtraRewards){
+      setTimeout(printExtraRewards, timeOut,generatedExtraRewards[extra]["text"],generatedExtraRewards[extra]["class"])
+      scroll()
+
+      timeOut += 1000;
+    }
+
+  }
+
+
   setTimeout(function () {
-    $("#logs").append("<div class='terminal'>Reduccion del Indice de Caos General en <bold class='chaos'>"
-      + chaos + "</bold> puntos</div>")
+    $("#logs").append("<br><div class='terminal'>Reduccion del Indice de Caos General en <bold class='chaos'>"
+      + numberWithDots(chaos) + "</bold> puntos</div>")
+      scroll()
   }, timeOut)
 
   timeOut += 2000;
 
   setTimeout(function () {
     $("#logs").append("<div class='terminal'>Recomensas obtenidas <bold class='money'>"
-      + reward + "$</bold></div><br>")
+      + numberWithDots(reward) + "$</bold></div>")
+      scroll()
   }, timeOut)
 
   timeOut += 2000;
 
+  if(blues > 0){
+    setTimeout(function () {
+      $("#logs").append("<div class='terminal'>Azules obtenidos <bold class='blues'>"
+        + blues + "<i class='fab fa-ethereum'></bold></div><br>")
+        scroll()
+    }, timeOut)
 
+    timeOut += 2000;
+  }
 
   setTimeout(function () {
     $("#generate").removeClass('disabled');
@@ -622,6 +732,34 @@ function parseAgents() {
   }
 }
 
+var generatedExtraRewards = []
+function generateExtraRewards(){
+  generatedExtraRewards = []
+  var numberOfRewards = 0
+
+  for (var log in logs) {
+    if (logs[log].sucess) {
+      numberOfRewards++
+    }
+  }
+
+  var probMax = countProbMax(extraRewardProb)
+
+  for(var i=0; i< numberOfRewards; i++){
+    var rand = (Math.round(Math.random() * probMax))
+
+    for (prob in extraRewardProb) {
+      if (parseInt(extraRewardProb[prob]["prob"]) >= rand) {
+        generatedExtraRewards.push(extraRewardProb[prob])
+        break;
+      } else {
+        rand -= parseInt(extraRewardProb[prob]["prob"])
+      }
+    }
+
+  }
+
+}
 
 
 // ***************************
@@ -654,6 +792,10 @@ $(function () {
     $("#logs").show();
     $("#back").show();
 
+    $('html,body').animate({
+      scrollTop: $("#logs").offset().top * 0.9
+    }, 1000);
+
 
     logs = []
 
@@ -661,6 +803,7 @@ $(function () {
     parseAgents()
     generateAllQuests()
     asingAgentToQuest()
+    generateExtraRewards()
     printResults()
 
 
