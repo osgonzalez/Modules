@@ -698,7 +698,7 @@ function printResults() {
   if(blues > 0){
     setTimeout(function () {
       $("#logs").append("<div class='terminal'>Azules obtenidos <bold class='blues'>"
-        + blues + "<i class='fab fa-ethereum'></bold></div><br>")
+        + blues + "<i class='fab fa-ethereum'></i></bold></div><br>")
         scroll()
     }, timeOut)
 
