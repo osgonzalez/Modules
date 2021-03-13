@@ -1,3 +1,7 @@
+
+
+var carrouselInterval = 4000;
+
 $(function() {  
     setTimeout(() => {$("#header").removeClass("toggled"); }, 500);
     var lastModificationDate = 0.5;
@@ -181,18 +185,26 @@ $(function() {
                                     for(var img in response.images.files){
                                         if(i == 0){
                                            // $("#indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>)');  
-                                            $("#carrouselDiv").append(' <div class="carousel-item active">'+
+                                            $("#carrouselDiv").append(' <div class="carousel-item active"  data-target="#carouselContainer" data-slide-to="0">'+
                                             '            <img class="d-block w-100" src="'+response.images.files[img]+'">'+ 
                                             '        </div>');                      
                                         }else{
                                             //$("#indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="0"></li>)');                           
-                                            $("#carrouselDiv").append(' <div class="carousel-item">'+
+                                            $("#carrouselDiv").append(' <div class="carousel-item" data-target="#carouselContainer" data-slide-to="'+i+'">'+
                                             '            <img class="d-block w-100" src="'+response.images.files[img]+'">'+ 
                                             '        </div>'); 
                                         }
                                         i++;
 
                                     }
+
+ 
+                                    $("#carouselContainer").carousel({
+                                        interval: carrouselInterval
+                                      })
+                                    setInterval(function(){
+                                        $("#carouselContainer").carousel('next');
+                                    },carrouselInterval)
 
                                 //    $("#carouselContainer").carousel('dispose'); 
                                 //    $('#carouselContainer').carousel({
