@@ -53,6 +53,10 @@ function generateStandarQuest() {
 
 function asingAgentToQuest() {
 
+
+  var agentAsignedQuest=[]
+
+
   var orderType = $('input[name="preferemces"]:checked').val();
 
   if (orderType == "Chaos") {
@@ -87,8 +91,12 @@ function asingAgentToQuest() {
       var tempAgent = tempAgents[index];
       tempAgents.splice(index, 1);
 
-      executeQuest(tempAgent, quests[quest])
-    }else{
+      agentAsignedQuest.push({
+        "agent": clone(tempAgent),
+        "quest": clone(quests[quest])
+      })
+ 
+      }else{
       undoQuest.push(quests[quest])
     }
   }
@@ -139,11 +147,41 @@ function asingAgentToQuest() {
         var tempAgent = pairAgents[index];
         pairAgents.splice(index, 1);
   
-        executeQuest(tempAgent, undoQuest[quest])
+        agentAsignedQuest.push({
+          "agent": clone(tempAgent),
+          "quest": clone(undoQuest[quest])
+          })
       }
     }
   
 
+  }
+
+  for(pair in pairAgents){
+
+    var lessProbQuestIndex = null;
+    var lessProbQuestValue = null;
+
+    for(row in agentAsignedQuest){
+      var prob = getSuccesProb(agentAsignedQuest[row].agent,agentAsignedQuest[row].quest)
+
+      if(lessProbQuestValue == null || prob < lessProbQuestValue){
+        lessProbQuestIndex = row;
+      }
+    }
+
+    if(lessProbQuestIndex != null){
+      agentAsignedQuest[lessProbQuestIndex].agent = {
+        "name": agentAsignedQuest[lessProbQuestIndex].agent.name + " y " + pairAgents[pair].name,
+        "puntuation": parseInt(agentAsignedQuest[lessProbQuestIndex].agent.puntuation) + parseInt( pairAgents[pair].puntuation)
+      }
+    }
+
+  }
+
+console.log(agentAsignedQuest)
+  for(row in agentAsignedQuest){
+    executeQuest(agentAsignedQuest[row].agent,agentAsignedQuest[row].quest)
   }
 
 }
@@ -761,6 +799,13 @@ function generateExtraRewards(){
 
 }
 
+
+function clone(element){
+  if(element == null){
+    return null;
+  }
+  return JSON.parse(JSON.stringify(element))
+}
 
 // ***************************
 // Document Ready
